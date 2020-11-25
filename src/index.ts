@@ -6,6 +6,7 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { HelloWorldResolver } from "./resolvers/HelloWorldResolver";
+import { DisclosureResolver } from "./resolvers/DisclosureResolver";
 
 // Set environment variables
 const environment = process.env.NODE_ENV;
@@ -21,7 +22,7 @@ dotenv.config({ path: path.resolve(__dirname, `.env.${environment}`) });
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloWorldResolver],
+      resolvers: [HelloWorldResolver, DisclosureResolver],
       validate: true,
     }),
     context: ({ req, res }) => ({ req, res }),
