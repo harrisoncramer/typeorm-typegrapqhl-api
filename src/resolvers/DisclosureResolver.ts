@@ -1,4 +1,5 @@
 import { Query, Resolver, Mutation, Arg, InputType, Field } from "type-graphql";
+import { getRepository } from "typeorm";
 import { Disclosure } from "../entity/Disclosure";
 
 @InputType({ description: "Input type to add a disclosure." })
@@ -27,16 +28,28 @@ class SkipLimitInput {
   limit: number;
 }
 
+@InputType()
+class FindDisclosuresInput extends SkipLimitInput {
+  @Field({ nullable: true })
+  field: string;
+
+  @Field({ nullable: true })
+  filter: string;
+}
+
 @Resolver()
 export class DisclosureResolver {
   @Query(() => [Disclosure])
-  async findDisclosures(@Arg("input") input: SkipLimitInput) {
-    const order = { [input.orderField]: input.order || "ASC" };
-    let results = await Disclosure.find({
-      take: input.limit,
-      skip: input.skip,
-      order,
-    });
+  async findDisclosures(@Arg("input") input: FindDisclosuresInput) {
+    let results = await getRepository(Disclosure)
+      .createQueryBuilder()
+      .where(`disclosure.${input.field} like :name`, {
+        name: `%${input.filter}%`,
+      })
+      .skip(input.skip)
+      .limit(input.limit)
+      .getMany();
+
     return results;
   }
 

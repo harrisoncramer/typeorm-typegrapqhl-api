@@ -7,6 +7,7 @@ import {
   InputType,
   Field,
 } from "type-graphql";
+import { getRepository } from "typeorm";
 import { Movie } from "../entity/Movie";
 
 @InputType()
