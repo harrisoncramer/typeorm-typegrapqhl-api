@@ -10,7 +10,7 @@ import { DisclosureResolver } from "./resolvers/DisclosureResolver";
 
 // Set environment variables
 const environment = process.env.NODE_ENV;
-dotenv.config({ path: path.resolve(__dirname, `.env.${environment}`) });
+dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
 
 (async () => {
   const app = express();

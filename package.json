@@ -23,7 +23,7 @@
     "typeorm": "0.2.29"
   },
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts",
+    "start": "export set NODE_ENV=development && nodemon --exec ts-node src/index.ts",
     "build": "tsc"
   }
 }
