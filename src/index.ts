@@ -7,6 +7,7 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { HelloWorldResolver } from "./resolvers/HelloWorldResolver";
 import { DisclosureResolver } from "./resolvers/DisclosureResolver";
+import { Disclosure } from "./entity/Disclosure";
 
 // Set environment variables
 const environment = process.env.NODE_ENV;
@@ -19,10 +20,17 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
     process.env.NODE_ENV || "development"
   );
 
-  await createConnection({ ...options, name: "default" });
+  await createConnection({
+    ...options,
+    entities: [Disclosure],
+    subscribers: [],
+    migrations: [],
+    name: "default",
+  });
 
   const apolloServer = new ApolloServer({
     playground: true,
+    introspection: true,
     schema: await buildSchema({
       resolvers: [HelloWorldResolver, DisclosureResolver],
       validate: true,
