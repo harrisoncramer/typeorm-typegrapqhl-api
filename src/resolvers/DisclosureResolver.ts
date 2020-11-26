@@ -21,7 +21,7 @@ class SkipLimitInput {
   @Field()
   orderField: string;
   @Field({ nullable: true })
-  order?: "ASC" | "DSC";
+  order: "ASC" | "DSC";
   @Field()
   skip: number;
   @Field()
@@ -31,24 +31,25 @@ class SkipLimitInput {
 @InputType()
 class FindDisclosuresInput extends SkipLimitInput {
   @Field({ nullable: true })
-  field?: string;
+  field: string;
 
   @Field({ nullable: true })
-  filter?: string;
+  filter: string;
 }
 
 @Resolver()
 export class DisclosureResolver {
   @Query(() => [Disclosure])
   async findDisclosures(@Arg("input") input: FindDisclosuresInput) {
-    let query = getRepository(Disclosure).createQueryBuilder();
-    // If input field and input filter provided, add WHERE clause to query
-    if (input.field && input.filter) {
-      query.where(`disclosure.${input.field} like :name`, {
+    let results = await getRepository(Disclosure)
+      .createQueryBuilder()
+      .where(`disclosure.${input.field} like :name`, {
         name: `%${input.filter}%`,
-      });
-    }
-    let results = await query.skip(input.skip).limit(input.limit).getMany();
+      })
+      .skip(input.skip)
+      .limit(input.limit)
+      .getMany();
+
     return results;
   }
 
