@@ -18,6 +18,8 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
   const options = await getConnectionOptions(
     process.env.NODE_ENV || "development"
   );
+
+  console.log(options);
   await createConnection({ ...options, name: "default" });
 
   const apolloServer = new ApolloServer({

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "apollo-server-express": "^2.19.0",
+    "class-validator": "^0.12.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "graphql": "^15.4.0",
@@ -24,6 +25,6 @@
   },
   "scripts": {
     "start": "export set NODE_ENV=development && nodemon --exec ts-node src/index.ts",
-    "build": "tsc"
+    "build": "NODE_ENV=production tsc"
   }
 }

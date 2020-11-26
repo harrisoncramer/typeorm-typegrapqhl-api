@@ -17,7 +17,11 @@ module.exports = [
   {
     name: "production",
     type: "postgres",
-    url: process.env.DATABASE_URL,
+    host: process.env.PSQL_HOST,
+    port: process.env.PSQL_PORT,
+    password: process.env.PSQL_PASSWORD,
+    username: process.env.PSQL_USERNAME,
+    database: process.env.PSQL_DATABASE,
     synchronize: true, // switch this to false once you have the initial tables created and use migrations instead
     logging: false,
     entities: ["dist/entity/**/*.js"],
