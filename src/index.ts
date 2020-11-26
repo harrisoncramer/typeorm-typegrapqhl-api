@@ -22,6 +22,7 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
   await createConnection({ ...options, name: "default" });
 
   const apolloServer = new ApolloServer({
+    playground: true,
     schema: await buildSchema({
       resolvers: [HelloWorldResolver, DisclosureResolver],
       validate: true,
