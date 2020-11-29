@@ -1,6 +1,7 @@
 import { Query, Resolver, Mutation, Arg, InputType, Field } from "type-graphql";
 import { getRepository } from "typeorm";
 import { Disclosure } from "../entity/Disclosure";
+import { SkipLimitFilterInput } from "./Input";
 
 @InputType({ description: "Input type to add a disclosure." })
 class DisclosureInput implements Partial<Disclosure> {
@@ -16,40 +17,21 @@ class DisclosureInput implements Partial<Disclosure> {
   date: Date;
 }
 
-@InputType({ description: "Input type to set skip and limit in a find query." })
-class SkipLimitInput {
-  @Field()
-  orderField: string;
-  @Field({ nullable: true })
-  order: "ASC" | "DSC";
-  @Field()
-  skip: number;
-  @Field()
-  limit: number;
-}
-
-@InputType()
-class FindDisclosuresInput extends SkipLimitInput {
-  @Field({ nullable: true })
-  field: string;
-
-  @Field({ nullable: true })
-  filter: string;
-}
-
 @Resolver()
 export class DisclosureResolver {
   @Query(() => [Disclosure])
-  async findDisclosures(@Arg("input") input: FindDisclosuresInput) {
-    let results = await getRepository(Disclosure)
-      .createQueryBuilder()
-      .where(`disclosure.${input.field} like :name`, {
+  async findDisclosures(@Arg("input") input: SkipLimitFilterInput) {
+    let query = getRepository(Disclosure).createQueryBuilder("disclosure");
+    if (input.field && input.filter) {
+      query = query.where(`disclosure.${input.field} like :name`, {
         name: `%${input.filter}%`,
-      })
+      });
+    }
+    let results = await query
       .skip(input.skip)
       .limit(input.limit)
+      .addOrderBy(`disclosure.${input.orderField}`, input.order)
       .getMany();
-
     return results;
   }
 

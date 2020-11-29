@@ -5,9 +5,12 @@ import { createConnection, getConnectionOptions } from "typeorm";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
-import { HelloWorldResolver } from "./resolvers/HelloWorldResolver";
-import { DisclosureResolver } from "./resolvers/DisclosureResolver";
-import { Disclosure } from "./entity/Disclosure";
+import {
+  DisclosureResolver,
+  HouseHearingResolver,
+  SenateHearingResolver,
+} from "./resolvers";
+import { Disclosure, HouseHearing } from "./entity";
 
 // Set environment variables
 const environment = process.env.NODE_ENV;
@@ -22,7 +25,7 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
 
   await createConnection({
     ...options,
-    entities: [Disclosure],
+    entities: [Disclosure, HouseHearing],
     subscribers: [],
     migrations: [],
     name: "default",
@@ -32,7 +35,11 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
     playground: true,
     introspection: true,
     schema: await buildSchema({
-      resolvers: [HelloWorldResolver, DisclosureResolver],
+      resolvers: [
+        DisclosureResolver,
+        HouseHearingResolver,
+        SenateHearingResolver,
+      ],
       validate: true,
     }),
     context: ({ req, res }) => ({ req, res }),
@@ -41,6 +48,6 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
   apolloServer.applyMiddleware({ app, cors: false });
   const port = process.env.PORT || 4000;
   app.listen(port, () => {
-    console.log(`server started at http://localhost:${port}/graphql`);
+    console.log(`Server started at http://localhost:${port}/graphql`);
   });
 })();
