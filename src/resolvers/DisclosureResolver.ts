@@ -1,7 +1,7 @@
 import { Query, Resolver, Mutation, Arg, InputType, Field } from "type-graphql";
 import { getRepository } from "typeorm";
 import { Disclosure } from "../entity/Disclosure";
-import { SkipLimitFilterInput } from "./Input";
+import { SkipLimitFilterInput } from "./common/Input";
 
 @InputType({ description: "Input type to add a disclosure." })
 class DisclosureInput implements Partial<Disclosure> {

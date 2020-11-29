@@ -1,7 +1,7 @@
 import { Query, Resolver, Mutation, Arg } from "type-graphql";
 import { getRepository } from "typeorm";
 import { SenateHearing } from "../entity/Hearing";
-import { SkipLimitFilterInput, HearingInput } from "./Input";
+import { SkipLimitFilterInput, HearingInput } from "./common/Input";
 
 @Resolver()
 export class SenateHearingResolver {
