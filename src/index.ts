@@ -10,7 +10,7 @@ import {
   HouseHearingResolver,
   SenateHearingResolver,
 } from "./resolvers";
-import { Disclosure, HouseHearing } from "./entity";
+import { Disclosure, HouseHearing, SenateHearing } from "./entity";
 
 // Set environment variables
 const environment = process.env.NODE_ENV;
@@ -25,7 +25,7 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
 
   await createConnection({
     ...options,
-    entities: [Disclosure, HouseHearing],
+    entities: [Disclosure, HouseHearing, SenateHearing],
     subscribers: [],
     migrations: [],
     name: "default",
