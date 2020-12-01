@@ -10,7 +10,6 @@ import {
   HouseHearingResolver,
   SenateHearingResolver,
 } from "./resolvers";
-import { Disclosure, HouseHearing, SenateHearing } from "./entity";
 
 // Set environment variables
 const environment = process.env.NODE_ENV;
@@ -23,13 +22,7 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
     process.env.NODE_ENV || "development"
   );
 
-  await createConnection({
-    ...options,
-    entities: [Disclosure, HouseHearing, SenateHearing],
-    subscribers: [],
-    migrations: [],
-    name: "default",
-  });
+  await createConnection({ ...options, name: "default" });
 
   const apolloServer = new ApolloServer({
     playground: true,
@@ -48,6 +41,6 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
   apolloServer.applyMiddleware({ app, cors: false });
   const port = process.env.PORT || 4000;
   app.listen(port, () => {
-    console.log(`Server started at http://localhost:${port}/graphql`);
+    console.log(`server started at http://localhost:${port}/graphql`);
   });
 })();
