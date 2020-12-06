@@ -18,7 +18,7 @@ class SenateDisclosureInput implements Partial<SenateDisclosure> {
 }
 
 @Resolver()
-export class DisclosureResolver {
+export class SenateDisclosureResolver {
   @Query(() => [SenateDisclosure])
   async findSenateDisclosures(@Arg("input") input: SkipLimitFilterInput) {
     let query = getRepository(SenateDisclosure).createQueryBuilder(

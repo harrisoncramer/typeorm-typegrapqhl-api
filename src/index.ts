@@ -6,7 +6,8 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import {
-  DisclosureResolver,
+  SenateDisclosureResolver,
+  HouseDisclosureResolver,
   HouseHearingResolver,
   SenateHearingResolver,
 } from "./resolvers";
@@ -29,7 +30,8 @@ dotenv.config({ path: path.resolve(__dirname, "..", `.env.${environment}`) });
     introspection: true,
     schema: await buildSchema({
       resolvers: [
-        DisclosureResolver,
+        HouseDisclosureResolver,
+        SenateDisclosureResolver,
         HouseHearingResolver,
         SenateHearingResolver,
       ],
