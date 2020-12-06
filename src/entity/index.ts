@@ -1,2 +1,2 @@
-export * from "./Disclosure";
+export * from "./SenateDisclosure";
 export * from "./Hearing";
