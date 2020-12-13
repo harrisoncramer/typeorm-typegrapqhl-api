@@ -24,8 +24,11 @@ module.exports = [
     database: process.env.PSQL_DATABASE,
     synchronize: true, // switch this to false once you have the initial tables created and use migrations instead
     logging: false,
-    entities: [__dirname + "dist/entity/**/*.js"],
-    migrations: [__dirname + "dist/migration/**/*.js"],
-    subscribers: [__dirname + "dist/subscriber/**/*.js"],
+    entities: ["./dist/entity/*.js"],
+    migrations: ["./dist/migration/*.js"],
+    subscribers: ["./dist/subscriber/*.js"],
+    //entities: [__dirname + "dist/entity/**/*.js"],
+    //migrations: [__dirname + "dist/migration/**/*.js"],
+    //subscribers: [__dirname + "dist/subscriber/**/*.js"],
   },
 ];
