@@ -1,6 +1,6 @@
 # 🚀 TypeORM + Type-graphQL API
 
-This is the API that connects to sqllite in development and postgres on AWS (RDS) in production
+This is a GraphQL API that connects to SQLite in development and Postgres in production. Dockerized for faster deployment.
 
 ## Installation
 
