@@ -8,10 +8,16 @@ This is the API that connects to sqllite in development and postgres on AWS (RDS
 
 ## Development
 
-To spin up the development server locally, run `yarn start` which will open the grqphql playground on the port that you specify. In development (since we're using sqllite) the only `.env` required is the PORT.
+To spin up the development server locally, run `yarn start` which will open the grqphql playground on the port that you specify inside the `.env.development` file. In development (since we're using sqllite) the only environment variable required is the PORT.
 
-## Deployment
+## Production
 
-This API will run on a server like DigitalOcean or EC2. There's no automated deployment process at this point.
+This application is dockerized, and deployment requires that you build and push the image to a repository. On your host machine, you must create a `.env.production` file that adheres to the standard specified inside the `modules.d.ts` file (the typing inside that file doesn't really matter as all environment variables picked up by node are considered strings)
 
-Required environment variables for the production environment (which connect to PostgresSQL or another SQL database in AWS) can be found in the `modules.d.ts` file.
+The required production arguments to the `docker run` command are as follows (assuming you use port 3000 inside your `.env.production` file for the the container's port):
+
+`docker run -dit -p desired-port-exposed:3000 --env-file .env.production name-of-your-built-image`
+
+This will run your application and open it on the port you specify for "desired-host-port." The API will then be accessible on that port, at the endpoint `/graphql`
+
+For example, the final endpoint might look like: `145.10.10.93:1234/graphql` on your host machine.
