@@ -8,7 +8,7 @@ This is a GraphQL API that connects to SQLite in development and Postgres in pro
 
 ## Development
 
-To spin up the development server locally, run `yarn start` which will open the grqphql playground on the port that you specify inside the `.env.development` file. In development (since we're using sqllite) the only environment variable required is the PORT.
+To spin up the development server locally, run `yarn start` which will open the grqphql playground on the port that you specify inside the `.env.development` file. In development (since we're using SQLite) the only environment variable required is the PORT.
 
 ## Production
 
