@@ -26,6 +26,6 @@
   "scripts": {
     "start": "export set NODE_ENV=development && nodemon --exec ts-node src/index.ts",
     "build": "tsc",
-    "start:prod": "npm run build && NODE_ENV=production node dist/index.js"
+    "start:prod": "tsc && NODE_ENV=production node dist/index.js"
   }
 }
