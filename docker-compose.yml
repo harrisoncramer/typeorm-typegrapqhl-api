@@ -1,0 +1,11 @@
+version: "3"
+services:
+  api:
+    container_name: typeorm-api
+    # Mount the source container so that changes are re-built
+    volumes:
+      - ./src:/app/src
+    restart: always
+    build: .
+    ports:
+      - '3000:3000'

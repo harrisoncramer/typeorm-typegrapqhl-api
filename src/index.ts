@@ -12,11 +12,10 @@ import {
   SenateHearingResolver,
 } from "./resolvers";
 
-// Set environment variables if in development using dotenv
-// When in production, these are passed via the Docker --env-file argument
-if (process.env.NODE_ENV === "development") {
-  dotenv.config({ path: path.resolve(__dirname, "..", ".env.development") });
-}
+// Set environment variables
+dotenv.config({
+  path: path.resolve(__dirname, "..", `.env.${process.env.NODE_ENV}`),
+});
 
 (async () => {
   const app = express();
