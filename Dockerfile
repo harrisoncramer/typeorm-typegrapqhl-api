@@ -13,7 +13,7 @@ RUN npm install
 # Copy all files except for those specified in the .dockerignore file (node_modules)
 COPY . .
 
-# Build and run the index file
+# This is the command that executes when the file is run
 CMD npm run start:production
 
 # Expose the port that our application is running on (passed in .env.production file)

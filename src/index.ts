@@ -10,10 +10,6 @@ import {
   SenateHearingResolver,
 } from "./resolvers";
 
-//dotenv.config({
-//path: path.resolve(__dirname, "..", `.env.${process.env.NODE_ENV}`),
-//});
-
 (async () => {
   const app = express();
 
