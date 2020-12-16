@@ -10,7 +10,7 @@ This application uses `docker-compose` to ensure a consistent environment for th
 
 NOTE: In development, since we use sqllite and don't need to configure PostgresSQL connection options. In production, you'll need to pass more configuration variables that will allow TypeORM to connect to your database. These will be passed into the `ormconfig.js` file at runtime.
 
-2. Run the `ENV=prodcution PORT=1234 docker-compose up` inside your root directory; and `ENV=development PORT=1234 docker-compose up` for development. You can run the server in detached mode as well.
+2. Run the `ENV=production PORT=1234 docker-compose up` inside your root directory; and `ENV=development PORT=1234 docker-compose up` for development. You can run the server in detached mode as well.
 
 ## Playground
 
