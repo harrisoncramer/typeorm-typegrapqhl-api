@@ -7,14 +7,15 @@ WORKDIR /app
 # Copy our package.json file into the /app folder (wildcard allows for package.lock.json)
 COPY package*.json /app
 
-# Run your install
 RUN npm install 
 
-# Copy all files except for those specified in the .dockerignore file (node_modules)
 COPY . .
 
-# This is the command that executes when the file is run
-CMD npm run start:production
+# NOTE: This application starts in development mode by default
+# Simply pass the ENV=production variable to the docker-compose file
+# and this command will be overwritten to be start:production
+CMD npm run start:development
 
-# Expose the port that our application is running on (passed in .env.production file)
-EXPOSE 3000
+# NOTE: This application exposes port 3122, which you should also specify in your 
+# environment files by default. If you don't you must change this to expose the API.
+EXPOSE 3122
