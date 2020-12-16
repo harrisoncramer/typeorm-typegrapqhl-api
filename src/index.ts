@@ -13,14 +13,12 @@ import {
 (async () => {
   const app = express();
 
-  const options = await getConnectionOptions(
-    process.env.NODE_ENV || "development"
-  );
+  const options = await getConnectionOptions(process.env.NODE_ENV);
 
   await createConnection({ ...options, name: "default" });
 
   const apolloServer = new ApolloServer({
-    playground: true,
+    playground: process.env.NODE_ENV === "development",
     introspection: true,
     schema: await buildSchema({
       resolvers: [

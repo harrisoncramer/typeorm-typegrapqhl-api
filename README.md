@@ -4,20 +4,14 @@ This is a GraphQL API that connects to SQLite in development and Postgres in pro
 
 ## Installation
 
-`yarn install`
+This application uses `docker-compose` to ensure a consistent environment for the API. Running it in either development or production requires just a few steps:
 
-## Development
+1. Define your variables for development inside a `.env.development` file, and for production inside a `.env.production` file. Look at the `modules.d.ts` to see what is required configuration for your production environment (basically just PostgresSQL connection options). The `.env.development` file only needs to contain the port number.
 
-To spin up the development server locally, run `yarn start` which will open the grqphql playground on the port that you specify inside the `.env.development` file. In development (since we're using SQLite) the only environment variable required is the PORT.
+2. Run the `ENV=prodcution docker-compose up` inside your root directory; and `ENV=development docker-compose up` for development.
 
-## Production
+## Playground
 
-This application is dockerized, and deployment requires that you build and push the image to a repository. On your host machine, you must create a `.env.production` file that adheres to the standard specified inside the `modules.d.ts` file (the typing inside that file doesn't really matter as all environment variables picked up by node are considered strings)
+This will run your application and open it on the port you specify. The API will then be accessible on that port, at the `/graphql` endpoint. For example, the final API endpoint might be: `http://localhost:3000/graphql` on your host machine.
 
-The required production arguments to the `docker run` command are as follows (assuming you use port 3000 inside your `.env.production` file for the the container's port):
-
-`docker run -dit -p desired-port-exposed:3000 --env-file .env.production name-of-your-built-image`
-
-This will run your application and open it on the port you specify for "desired-host-port." The API will then be accessible on that port, at the endpoint `/graphql`
-
-For example, the final endpoint might look like: `145.10.10.93:1234/graphql` on your host machine.
+The
