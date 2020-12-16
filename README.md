@@ -6,7 +6,7 @@ This is a GraphQL API that connects to SQLite in development and Postgres in pro
 
 This application uses `docker-compose` to ensure a consistent environment for the API. Running it in either development or production requires just a few steps:
 
-1. Define your additional variables for development inside a `.env.development` file, and for production inside a `.env.production` file. Look at the `modules.d.ts` to see what is required configuration for your production environment (basically just PostgresSQL connection options). By default, the `.env.development` file does not need any arguments, and the API will run on port 3122 and map to the same port on your host system.
+1. Define your additional variables for development inside a `.env.development` file, and for production inside a `.env.production` file. Look at the `modules.d.ts` to see what is required configuration for your production environment (basically just PostgresSQL connection options). By default, the `.env.development` file does not need any arguments, however it must exist. By default, the API will run on port 3122 and map to the same port on your host system.
 
 NOTE: In development, since we use sqllite and don't need to configure PostgresSQL connection options. In production, you'll need to pass more configuration variables that will allow TypeORM to connect to your database. These will be passed into the `ormconfig.js` file at runtime.
 
