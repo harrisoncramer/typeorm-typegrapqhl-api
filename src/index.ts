@@ -1,6 +1,4 @@
 import "reflect-metadata";
-import path from "path";
-import dotenv from "dotenv";
 import { createConnection, getConnectionOptions } from "typeorm";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
@@ -12,10 +10,9 @@ import {
   SenateHearingResolver,
 } from "./resolvers";
 
-// Set environment variables
-dotenv.config({
-  path: path.resolve(__dirname, "..", `.env.${process.env.NODE_ENV}`),
-});
+//dotenv.config({
+//path: path.resolve(__dirname, "..", `.env.${process.env.NODE_ENV}`),
+//});
 
 (async () => {
   const app = express();

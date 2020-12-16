@@ -8,16 +8,13 @@ WORKDIR /app
 COPY package*.json /app
 
 # Run your install
-RUN npm install
+RUN npm install 
 
 # Copy all files except for those specified in the .dockerignore file (node_modules)
 COPY . .
 
-# Copy environment variables from production file when building docker image.
-COPY .env.production .env.production
-
 # Build and run the index file
-CMD npm run start:prod
+CMD npm run start:production
 
 # Expose the port that our application is running on (passed in .env.production file)
 EXPOSE 3000

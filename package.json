@@ -8,8 +8,7 @@
     "@typescript-eslint/parser": "^4.8.2",
     "eslint": "^7.14.0",
     "nodemon": "^2.0.6",
-    "ts-node": "9.0.0",
-    "typescript": "^4.1.3"
+    "ts-node": "9.0.0"
   },
   "dependencies": {
     "apollo-server-express": "^2.19.0",
@@ -21,11 +20,11 @@
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.0",
     "type-graphql": "^1.1.1",
-    "typeorm": "0.2.29"
+    "typeorm": "0.2.29",
+    "typescript": "^4.1.3"
   },
   "scripts": {
-    "start": "export set NODE_ENV=development && nodemon --exec ts-node src/index.ts",
-    "build": "tsc",
-    "start:prod": "tsc && NODE_ENV=production node dist/index.js"
+    "start:development": "export set NODE_ENV=development && nodemon --exec ts-node src/index.ts",
+    "start:production": "tsc && NODE_ENV=production node dist/index.js"
   }
 }
