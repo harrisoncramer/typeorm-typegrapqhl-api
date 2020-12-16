@@ -18,4 +18,4 @@ CMD npm run start:development
 
 # NOTE: This application exposes port 3122, which you should also specify in your 
 # environment files by default. If you don't you must change this to expose the API.
-EXPOSE 3122
+EXPOSE $PORT

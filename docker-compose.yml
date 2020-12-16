@@ -3,15 +3,25 @@ services:
   api:
     container_name: "typeorm-api"
     image: "typeorm-api:${ENV}"
-    # Mount the source container so that changes are re-built
     volumes:
       - ./src:/app/src
     restart: always
+    # Build the image, pass down the "PORT" CLI argument
+    # to expose the correct port
     build: 
       context: ./
       dockerfile: Dockerfile
+      args:
+        PORT: "${PORT}"
+    # Pass the PORT and ENV arguments to the Node.js context,
+    # And use the ENV argument to load in additional environment
+    # variables from the .env.development or .env.production files
+    # and pick the correct startup script.
+    environment:
+      PORT: "${PORT}"
+      ENV: "${ENV}"
     env_file:
       - ".env.${ENV}"
     ports:
-      - '3000:3000'
+      - "${PORT}:${PORT}"
     command: "npm run start:${ENV}"
