@@ -22,5 +22,3 @@ In production, you'll need to pass more configuration variables that will allow 
 ## Playground
 
 This will run your application and open it on the port you specify. The API will then be accessible on that port, at the `/graphql` endpoint. For example, the final API endpoint might be: `http://localhost:3000/graphql` on your host machine.
-
-The
