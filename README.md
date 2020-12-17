@@ -15,3 +15,26 @@ NOTE: In development, since we use sqllite and don't need to configure PostgresS
 ## Playground
 
 This will run your application and open it on the port you specify. The API will then be accessible on that port, at the `/graphql` endpoint. For example, the final API endpoint might be: `http://localhost:1234/graphql` on your host machine.
+
+You can easily test the DB with the following mutation:
+
+```
+mutation {
+  addHouseHearing(
+    input: {
+      title: "hi"
+      date: "2020-12-16T23:56:29.931Z"
+      time: "2020-12-16T23:56:29.931Z"
+      location: "a"
+      text: ""
+      chamber: "house"
+      committee: "hfac"
+      link: "google.com"
+    }
+  ) {
+    id
+  }
+}
+```
+
+This should return the ID of the new data. Congratulations, your database and API are up and running!

@@ -1,3 +1,4 @@
+postgres
 node_modules
 dist
 database.sqlite

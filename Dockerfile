@@ -9,9 +9,12 @@ COPY package*.json /app
 
 RUN npm install 
 
-COPY . .
+# Copy source files + compilation configuration, db connection options, etc.
+COPY ./src .
+COPY tsconfig.json .
+COPY ormconfig.js .
+COPY modules.d.ts .
 
-# NOTE: This application starts in development mode by default
 # Simply pass the ENV=production variable to the docker-compose file
 # and this command will be overwritten to be start:production
 CMD npm run start:development
