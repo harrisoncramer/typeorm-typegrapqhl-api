@@ -10,15 +10,11 @@ This application uses `docker-compose` to ensure a consistent environment for th
 
 NOTE: In development, since we use sqllite and don't need to configure PostgresSQL connection options. In production, you'll need to pass more configuration variables that will allow TypeORM to connect to your database. These will be passed into the `ormconfig.js` file at runtime.
 
-2. Run the `ENV=production PORT=1234 docker-compose up -d` inside your root directory; and `ENV=development PORT=1234 docker-compose up` for development.
-
-3. If you'd like to startup a PostgresSQL server locally in production, you can do that too! Add the `docker-compose.pg.yml` file to your startup script: `ENV=production PORT=1234 docker-compose -f docker-compose.yml -f docker-compose.pg.yml up -d`
-
-Be sure that your connection options in your `.env.production` file point to your local PostgresSQL server if you do this!
+2. Run the `ENV=production PORT=1234 docker-compose up` inside your root directory; and `ENV=development PORT=1234 docker-compose up` for development. You can run the server in detached mode as well.
 
 ## Playground
 
-The application will open up a playground on the port you specify in development mode. The API will then be accessible on that port, at the `/graphql` endpoint. For example, the final API endpoint might be: `http://localhost:1234/graphql` on your host machine.
+This will run your application and open it on the port you specify. The API will then be accessible on that port, at the `/graphql` endpoint. For example, the final API endpoint might be: `http://localhost:1234/graphql` on your host machine.
 
 You can easily test the DB with the following mutation:
 
