@@ -13,6 +13,7 @@ services:
       dockerfile: Dockerfile
       args:
         PORT: "${PORT}"
+        ENV: "${ENV}"
     # Pass the PORT and ENV arguments to the Node.js context,
     # And use the ENV argument to load in additional environment
     # variables from the .env.development or .env.production files
@@ -24,4 +25,6 @@ services:
       - ".env.${ENV}"
     ports:
       - "${PORT}:${PORT}"
+    # This command will overwrite what is contained in the Dockerfile
+    # and start up your API in production if you pass ENV=production
     command: "npm run start:${ENV}"
