@@ -1,38 +1,17 @@
 version: "3"
 services:
   api:
+    image: "typeorm-api:development" 
     container_name: "typeorm-api"
-    image: "typeorm-api:${ENV}"
     volumes:
       - ./src:/app/src
     restart: always
-    # Build the image, pass down the "PORT" CLI argument to expose the correct port
     build: 
       context: ./
       dockerfile: Dockerfile
       args:
         PORT: "${PORT}"
-        ENV: "${ENV}"
-    # Pass the PORT and ENV arguments to the Node.js context, And use the ENV argument to load in additional environment variables from the .env.development or .env.production files and pick the correct startup script.
     environment:
       PORT: "${PORT}"
-      ENV: "${ENV}"
-    env_file:
-      - ".env.${ENV}"
     ports:
       - "${PORT}:${PORT}"
-    # This command will overwrite what is contained in the Dockerfile
-    command: "npm run start:${ENV}"
-    depends_on:
-      - db
-  db:
-    image: "postgres:9.6"
-    container_name: postgres
-    environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: postgres
-    volumes:
-      - "./postgres/${ENV}/data:/var/lib/postgresql/data:delegated"
-    ports:
-      - "5432:5432"
