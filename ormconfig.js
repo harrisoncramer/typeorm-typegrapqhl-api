@@ -5,8 +5,12 @@
 module.exports = [
   {
     name: "development",
-    type: "sqlite",
-    database: "database.sqlite",
+    type: "postgres",
+    host: "db",
+    port: 5432,
+    password: "postgres",
+    username: "postgres",
+    database: "postgres",
     synchronize: true,
     logging: true,
     entities: ["src/entity/**/*.ts"],

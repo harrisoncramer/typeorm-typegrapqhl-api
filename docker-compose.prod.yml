@@ -1,0 +1,15 @@
+version: "3"
+services:
+  api:
+    image: "typeorm-api:production"
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+      args:
+        ENV: production
+    environment:
+      ENV: production
+    env_file:
+      - ".env.production"
+    # This command will overwrite what is contained in the Dockerfile
+    command: "npm run start:production"
