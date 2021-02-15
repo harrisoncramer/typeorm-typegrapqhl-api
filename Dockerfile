@@ -16,10 +16,7 @@ COPY tsconfig.json .
 COPY ormconfig.js .
 COPY modules.d.ts .
 
-# Simply pass the ENV=production variable to the docker-compose file
-# and this command will be overwritten to be start:production
+# This command will be overwritten to be start:production with our docker-compose.prod.yml file
 CMD npm run start:development
 
-# NOTE: This application exposes port 3122, which you should also specify in your 
-# environment files by default. If you don't you must change this to expose the API.
 EXPOSE $PORT

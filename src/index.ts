@@ -25,7 +25,7 @@ import {
       console.error(err);
       retries -= 1;
       console.error(`Retries left ${retries}`);
-      await new Promise((res) => setTimeout(res, 2000));
+      await new Promise((res) => setTimeout(res, 5000));
     }
   }
 
