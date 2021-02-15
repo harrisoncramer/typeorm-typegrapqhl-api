@@ -1,0 +1,87 @@
+{
+	"info": {
+		"_postman_id": "189e734d-c265-4c88-901e-a4d7d1073b9e",
+		"name": "TypeORM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "createHouseHearing",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n  addHouseHearing(\n    input: {\n      title: \"hi\"\n      date: \"2020-12-16T23:56:29.931Z\"\n      time: \"2020-12-16T23:56:29.931Z\"\n      location: \"Rayburn\"\n      text: \"text\"\n      chamber: \"house\"\n      committee: \"hfac\"\n      link: \"google2.com\"\n    }\n  ) {\n    id\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findHouseHearing",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    findHouseHearing(id: \"499c6ee0-b69c-42a3-8c8f-5ba429057639\"){\n        id\n        location\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3333/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3333",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findHouseHearings",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\n    findHouseHearings(input: { skip: 0, limit: 100, orderField: \"title\" }){\n        id\n        location\n    }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1234/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1234",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

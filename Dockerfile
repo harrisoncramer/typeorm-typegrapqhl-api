@@ -1,5 +1,6 @@
 # Our application requires node.js to run. Use "alpine" version to get lighter Linux dependencies.
 FROM node:15.4.0-alpine3.10
+RUN apk add g++ make python
 
 # Specify that when you create the container, put the application inside the /app container
 WORKDIR /app
