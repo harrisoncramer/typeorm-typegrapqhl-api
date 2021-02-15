@@ -6,18 +6,14 @@ services:
     volumes:
       - ./src:/app/src
     restart: always
-    # Build the image, pass down the "PORT" CLI argument
-    # to expose the correct port
+    # Build the image, pass down the "PORT" CLI argument to expose the correct port
     build: 
       context: ./
       dockerfile: Dockerfile
       args:
         PORT: "${PORT}"
         ENV: "${ENV}"
-    # Pass the PORT and ENV arguments to the Node.js context,
-    # And use the ENV argument to load in additional environment
-    # variables from the .env.development or .env.production files
-    # and pick the correct startup script.
+    # Pass the PORT and ENV arguments to the Node.js context, And use the ENV argument to load in additional environment variables from the .env.development or .env.production files and pick the correct startup script.
     environment:
       PORT: "${PORT}"
       ENV: "${ENV}"
@@ -26,5 +22,17 @@ services:
     ports:
       - "${PORT}:${PORT}"
     # This command will overwrite what is contained in the Dockerfile
-    # and start up your API in production if you pass ENV=production
     command: "npm run start:${ENV}"
+    depends_on:
+      - db
+  db:
+    image: "postgres:9.6"
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - "./postgres/${ENV}/data:/var/lib/postgresql/data:delegated"
+    ports:
+      - "5432:5432"

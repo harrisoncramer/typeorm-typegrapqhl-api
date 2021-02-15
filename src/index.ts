@@ -15,7 +15,19 @@ import {
 
   const options = await getConnectionOptions(process.env.ENV);
 
-  await createConnection({ ...options, name: "default" });
+  let retries = 5;
+  while (retries) {
+    try {
+      await createConnection({ ...options, name: "default" });
+      break;
+    } catch (err) {
+      // Retry every two seconds...
+      console.error(err);
+      retries -= 1;
+      console.error(`Retries left ${retries}`);
+      await new Promise((res) => setTimeout(res, 2000));
+    }
+  }
 
   const apolloServer = new ApolloServer({
     playground: process.env.ENV === "development",
