@@ -1,6 +1,6 @@
 # 🚀 Dockerized TypeORM API w/ Apollo
 
-This is a GraphQL API that connects to SQLite in development and Postgres in production. Dockerized for faster deployment.
+This is a template GraphQL/TypeORM/PostgresSQL API, dockerized for quick deployment.
 
 ## Installation
 
