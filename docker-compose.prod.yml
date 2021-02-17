@@ -2,7 +2,7 @@ version: "3"
 services:
   api:
     image: "typeorm-api:production"
-    build: 
+    build:
       context: ./
       dockerfile: Dockerfile
       args:
@@ -13,3 +13,12 @@ services:
       - ".env.production"
     # This command will overwrite what is contained in the Dockerfile
     command: "npm run start:production"
+  reverse:
+    container_name: reverse
+    hostname: reverse
+    image: nginx:latest
+    volumes:
+      - ${PWD}/nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+      - 443:443
