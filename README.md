@@ -17,7 +17,7 @@ In production in order to open the API up for the world you'll also need to open
 
 1. If you're running this on EC2 (or another cloud provider with minimal configuration) you'll need docker-compose and docker (and git). Run the `user.sh` script to create a new user.** Login to your new user and then run the `setup.sh` script to download and configure docker and docker-compose.
 2. Define configuration variables that will allow TypeORM to connect to your remote database, inside a `.env.production` file. These will be passed into the `ormconfig.js` file at runtime. Presumably you do not want your database dockerized with this application, although that is possible, and indeed how this is built for development. See the `docker-compose.dev.yml` file for more information. Look at the `modules.d.ts` to see what is required configuration for your production environment (basically just PostgresSQL connection options).
-3. Run the `docker-compose` command: `docker-compose docker-compose.yml -f docker-compose.prod.yml up -d` which will run your service in detached mode.
+3. Run the `docker-compose` command: `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d` which will run your service in detached mode.
 
 ## Playground
 
