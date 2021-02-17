@@ -2,9 +2,11 @@
 
 This is a template GraphQL/TypeORM/PostgresSQL API, dockerized for quick deployment.
 
-## Installation
+## Setup
 
-This application uses `docker-compose` to ensure a consistent environment for the API. Running it in either development or production requires just a few steps. Some of the installation can be helped along (if you're starting with a fresh Ubuntu instance on AWS, for instance) with the startup scripts contained in the `scripts` folder. In production in order to open the API up for the world you'll need to open up port 80, which Nginx will proxy to your API. For more information check out [this](https://aws.amazon.com/premiumsupport/knowledge-center/connect-http-https-ec2/) article on setting security group permissions.
+This application uses `docker-compose` to ensure a consistent environment for the API. Running it in either development or production requires just a few steps. Some of the installation can be helped along (if you're starting with a fresh Ubuntu instance on AWS, for instance) with the startup scripts contained in the `scripts` folder. Note, however, that if you create a new user with the supplied script, you'll have to switch into the user's home folder and re-download this repository, because you probably won't able to edit the folder you're currently in (owned by ubuntu).
+
+In production in order to open the API up for the world you'll also need to open up port 80, which Nginx will proxy to your API. For more information check out [this](https://aws.amazon.com/premiumsupport/knowledge-center/connect-http-https-ec2/) article on setting security group permissions.
 
 ### Development
 
