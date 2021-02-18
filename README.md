@@ -11,7 +11,7 @@ In production in order to open the API up for the world you'll also need to open
 ### Development
 
 1. Define any additional variables for development inside a `.env.development` file. By default, the `.env.development` file doesn't require any variables, but must exist.
-2. Run the `docker-compose` script to start up your instance: `PORT=1451 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up` which will run your API locally, and expose it on `http://localhost:1451/graphql`. Take note that if you're running this for the first time, it'll take a few minutes to download the images and install all the dependencies. Subsequent startups will be fast. The entire bundle is ~500MB. This will expose the API on port 1451 on your local machine.
+2. Run the `docker-compose` script to start up your instance: `PORT=1451 docker-compose -f docker-compose.yml -f docker-compose.dev.yml up` which will run your API locally, and expose it on `http://localhost:1451/graphql`. This will expose the API on port 1451 on your local machine.
 
 ### Production
 
