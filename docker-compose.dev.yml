@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile
       args:
         ENV: development
+    ports:
+      - "${PORT}:1234"
     environment:
       ENV: development
       PORT: "${PORT}"
