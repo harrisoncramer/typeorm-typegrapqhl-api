@@ -9,10 +9,13 @@ services:
         ENV: production
     environment:
       ENV: production
+      PORT: 1234
     env_file:
       - ".env.production"
     # This command will overwrite what is contained in the Dockerfile
     command: "npm run start:production"
+    ports:
+      - 1234:1234
   reverse:
     container_name: reverse
     hostname: reverse

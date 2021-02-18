@@ -9,6 +9,7 @@ services:
         ENV: development
     environment:
       ENV: development
+      PORT: "${PORT}"
     env_file:
       - ".env.development"
     depends_on:

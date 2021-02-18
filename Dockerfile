@@ -19,4 +19,4 @@ COPY modules.d.ts .
 # This command will be overwritten to be start:production with our docker-compose.prod.yml file
 CMD npm run start:development
 
-EXPOSE $PORT
+EXPOSE 1234

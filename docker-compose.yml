@@ -10,9 +10,3 @@ services:
     build: 
       context: ./
       dockerfile: Dockerfile
-      args:
-        PORT: "${PORT}"
-    environment:
-      PORT: "${PORT}"
-    ports:
-      - "${PORT}:${PORT}"

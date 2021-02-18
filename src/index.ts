@@ -45,8 +45,9 @@ import {
   });
 
   apolloServer.applyMiddleware({ app, cors: true });
-  const port = process.env.PORT || 4000;
-  app.listen(port, () => {
-    console.log(`🔥 API exposed at http://localhost:${port}/graphql`);
+  app.listen(1234, () => {
+    console.log(
+      `🔥 API exposed at http://localhost:${process.env.PORT}/graphql` // This is what the port will be mapped to
+    );
   });
 })();
