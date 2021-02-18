@@ -14,7 +14,7 @@ export class SenateHearingResolver {
       });
     }
     let results = await query
-      .skip(input.skip)
+      .offset(input.skip)
       .limit(input.limit)
       .addOrderBy(`hearing.${input.orderField}`, input.order)
       .getMany();

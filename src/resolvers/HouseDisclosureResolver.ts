@@ -35,7 +35,7 @@ export class HouseDisclosureResolver {
       });
     }
     let results = await query
-      .skip(input.skip)
+      .offset(input.skip)
       .limit(input.limit)
       .addOrderBy(`disclosure.${input.orderField}`, input.order)
       .getMany();
