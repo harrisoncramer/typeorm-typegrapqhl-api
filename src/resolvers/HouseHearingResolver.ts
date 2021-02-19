@@ -6,7 +6,7 @@ import {
   HearingInput,
   HearingModifyInput,
 } from "./common/Input";
-import { findAndRemove } from "./common/Methods";
+import { findAndRemove, findOne } from "./common/Methods";
 
 @Resolver()
 export class HouseHearingResolver {
@@ -43,7 +43,7 @@ export class HouseHearingResolver {
 
   @Query(() => HouseHearing)
   async findHouseHearing(@Arg("id") id: string) {
-    let result = await HouseHearing.findOne({ id });
+    let result = findOne(HouseHearing, id);
     return result;
   }
 

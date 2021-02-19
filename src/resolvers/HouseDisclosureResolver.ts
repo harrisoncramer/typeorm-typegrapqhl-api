@@ -2,7 +2,7 @@ import { Query, Resolver, Mutation, Arg, InputType, Field } from "type-graphql";
 import { getRepository } from "typeorm";
 import { HouseDisclosure } from "../entity/HouseDisclosure";
 import { SkipLimitFilterInput } from "./common/Input";
-import { findAndRemove } from "./common/Methods";
+import { findAndRemove, findOne } from "./common/Methods";
 
 @InputType({ description: "Input type to add a disclosure." })
 class HouseDisclosureInput implements Partial<HouseDisclosure> {
@@ -45,7 +45,7 @@ export class HouseDisclosureResolver {
 
   @Query(() => HouseDisclosure)
   async findHouseDisclosure(@Arg("id") id: string) {
-    let result = await HouseDisclosure.findOne({ id });
+    let result = await findOne(HouseDisclosure, id);
     return result;
   }
 
