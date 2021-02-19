@@ -1,5 +1,7 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import { Column, Entity } from "typeorm";
+
 import { ObjectType, Field } from "type-graphql";
+import { Log } from "./common/Log";
 
 enum Chambers {
   SENATE = "senate",
@@ -8,11 +10,7 @@ enum Chambers {
 
 @ObjectType()
 @Entity()
-class BaseHearing extends BaseEntity {
-  @Field()
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
+class BaseHearing extends Log {
   @Field()
   @Column()
   title: string;
