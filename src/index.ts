@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { createConnection, getConnectionOptions } from "typeorm";
+import { createConnection, getConnectionOptions, getConnection } from "typeorm";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
@@ -27,6 +27,10 @@ import {
       console.error(`Retries left ${retries}`);
       await new Promise((res) => setTimeout(res, 5000));
     }
+  }
+
+  if (retries === 0 && !!getConnection()) {
+    throw new Error("Not able to connect");
   }
 
   const apolloServer = new ApolloServer({

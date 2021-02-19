@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { HouseHearing } from "../entity/Hearing";
 import { SkipLimitFilterInput, HearingInput } from "./common/Input";
 import { findAndRemove } from "./common/Methods";
+import { Optional } from "utility-types";
 
 @Resolver()
 export class HouseHearingResolver {
@@ -27,6 +28,20 @@ export class HouseHearingResolver {
   async findHouseHearing(@Arg("id") id: string) {
     let result = await HouseHearing.findOne({ id });
     return result;
+  }
+
+  @Mutation(() => HouseHearing)
+  async modifyHouseHearing(
+    @Arg("id") id: string,
+    @Arg("input") input: HearingInput
+  ) {
+    let query = getRepository(HouseHearing).createQueryBuilder("hearing");
+    await query
+      .update(HouseHearing)
+      .set({ ...input })
+      .where("id = :id", { id })
+      .execute();
+    return await HouseHearing.findOne({ id });
   }
 
   @Mutation(() => String)

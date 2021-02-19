@@ -19,6 +19,10 @@ In production in order to open the API up for the world you'll also need to open
 2. Define configuration variables that will allow TypeORM to connect to your remote database, inside a `.env.production` file. These will be passed into the `ormconfig.js` file at runtime. Presumably you do not want your database dockerized with this application, although that is possible, and indeed how this is built for development. See the `docker-compose.dev.yml` file for more information. Look at the `modules.d.ts` to see what is required configuration for your production environment (basically just PostgresSQL connection options).
 3. Run the `docker-compose` command: `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d` which will run your service in detached mode. You cannot set the port from the command line because the Nginx file reverse proxies traffic to port `1234` but you could replace this number across the project if you want to use a different port.
 
+## Logs
+
+The application automatically sends out information to the console, which in development and production will automatically be output to docker's logs. You can see the last hour of logs from an instance with the `docker logs CONTAINER_ID --since 60m` command, for example.
+
 ## Playground
 
 In development, the API will be accessible at the `http://localhost:1234/graphql` endpoint. You can easily test the DB with the following mutation:
