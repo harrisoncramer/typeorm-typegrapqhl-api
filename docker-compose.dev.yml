@@ -2,9 +2,13 @@ version: "3"
 services:
   api:
     image: "typeorm-api:development" 
+    container_name: "typeorm-api"
     build: 
       context: ./
       dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - "./package.json:/app/package.json" # Will overwrite local package.json file
     ports:
       - "${PORT}:1234"
     environment:
@@ -14,6 +18,7 @@ services:
       - ".env.development"
     depends_on:
       - db
+    restart: always
   db:
     image: "postgres:9.6"
     container_name: postgres

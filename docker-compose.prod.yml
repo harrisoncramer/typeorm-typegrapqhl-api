@@ -2,9 +2,12 @@ version: "3"
 services:
   api:
     image: "typeorm-api:production"
+    container_name: "typeorm-api"
     build:
       context: ./
       dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
     environment:
       ENV: production
       PORT: 1234
