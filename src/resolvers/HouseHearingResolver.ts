@@ -3,7 +3,6 @@ import { getRepository } from "typeorm";
 import { HouseHearing } from "../entity/Hearing";
 import { SkipLimitFilterInput, HearingInput } from "./common/Input";
 import { findAndRemove } from "./common/Methods";
-import { Optional } from "utility-types";
 
 @Resolver()
 export class HouseHearingResolver {
