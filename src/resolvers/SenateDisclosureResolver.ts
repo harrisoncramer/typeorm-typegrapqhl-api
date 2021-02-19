@@ -30,7 +30,7 @@ export class SenateDisclosureResolver {
         name: `%${input.filter}%`,
       });
     }
-    let results = await query
+    const results = await query
       .offset(input.skip)
       .limit(input.limit)
       .addOrderBy(`disclosure.${input.orderField}`, input.order)
@@ -40,7 +40,7 @@ export class SenateDisclosureResolver {
 
   @Query(() => SenateDisclosure)
   async findSenateDisclosure(@Arg("id") id: string) {
-    let result = await findOne(SenateDisclosure, id);
+    const result = await findOne(SenateDisclosure, id);
     return result;
   }
 
@@ -52,7 +52,7 @@ export class SenateDisclosureResolver {
 
   @Mutation(() => SenateDisclosure)
   async addSenateDisclosure(@Arg("input") input: SenateDisclosureInput) {
-    let result = await SenateDisclosure.create(input).save();
+    const result = await SenateDisclosure.create(input).save();
     return result;
   }
 }

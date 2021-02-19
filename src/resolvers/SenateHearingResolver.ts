@@ -18,7 +18,7 @@ export class SenateHearingResolver {
         search: `%${input.filter}%`,
       });
     }
-    let results = await query
+    const results = await query
       .offset(input.skip)
       .limit(input.limit)
       .addOrderBy(`hearing.${input.orderField}`, input.order)
@@ -31,7 +31,7 @@ export class SenateHearingResolver {
     @Arg("id") id: string,
     @Arg("input") input: HearingModifyInput
   ) {
-    let query = getRepository(SenateHearing).createQueryBuilder("hearing");
+    const query = getRepository(SenateHearing).createQueryBuilder("hearing");
     await query
       .update(SenateHearing)
       .set({ ...input })
@@ -42,7 +42,7 @@ export class SenateHearingResolver {
 
   @Query(() => SenateHearing)
   async findSenateHearing(@Arg("id") id: string) {
-    let result = findOne(SenateHearing, id);
+    const result = findOne(SenateHearing, id);
     return result;
   }
 
@@ -54,7 +54,7 @@ export class SenateHearingResolver {
 
   @Mutation(() => SenateHearing)
   async addSenateHearing(@Arg("input") input: HearingInput) {
-    let result = await SenateHearing.create(input).save();
+    const result = await SenateHearing.create(input).save();
     return result;
   }
 }

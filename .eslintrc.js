@@ -12,8 +12,6 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
-    "@typescript-eslint/explicit-function-return-type": {
-      allowExpressions: 1,
-    },
+    "@typescript-eslint/explicit-function-return-type": 0,
   },
 };

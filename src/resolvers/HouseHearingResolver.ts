@@ -19,7 +19,7 @@ export class HouseHearingResolver {
       });
     }
 
-    let results = await query
+    const results = await query
       .offset(input.skip)
       .limit(input.limit)
       .addOrderBy(`hearing.${input.orderField}`, input.order)
@@ -32,7 +32,7 @@ export class HouseHearingResolver {
     @Arg("id") id: string,
     @Arg("input") input: HearingModifyInput
   ) {
-    let query = getRepository(HouseHearing).createQueryBuilder("hearing");
+    const query = getRepository(HouseHearing).createQueryBuilder("hearing");
     await query
       .update(HouseHearing)
       .set({ ...input })
@@ -43,7 +43,7 @@ export class HouseHearingResolver {
 
   @Query(() => HouseHearing)
   async findHouseHearing(@Arg("id") id: string) {
-    let result = findOne(HouseHearing, id);
+    const result = findOne(HouseHearing, id);
     return result;
   }
 
@@ -55,7 +55,7 @@ export class HouseHearingResolver {
 
   @Mutation(() => HouseHearing)
   async addHouseHearing(@Arg("input") input: HearingInput) {
-    let result = await HouseHearing.create(input).save();
+    const result = await HouseHearing.create(input).save();
     return result;
   }
 }

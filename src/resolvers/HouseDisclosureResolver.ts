@@ -35,7 +35,7 @@ export class HouseDisclosureResolver {
         name: `%${input.filter}%`,
       });
     }
-    let results = await query
+    const results = await query
       .offset(input.skip)
       .limit(input.limit)
       .addOrderBy(`disclosure.${input.orderField}`, input.order)
@@ -45,7 +45,7 @@ export class HouseDisclosureResolver {
 
   @Query(() => HouseDisclosure)
   async findHouseDisclosure(@Arg("id") id: string) {
-    let result = await findOne(HouseDisclosure, id);
+    const result = await findOne(HouseDisclosure, id);
     return result;
   }
 
@@ -57,7 +57,7 @@ export class HouseDisclosureResolver {
 
   @Mutation(() => HouseDisclosure)
   async addHouseDisclosure(@Arg("input") input: HouseDisclosureInput) {
-    let result = await HouseDisclosure.create(input).save();
+    const result = await HouseDisclosure.create(input).save();
     return result;
   }
 }
