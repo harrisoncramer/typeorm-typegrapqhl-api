@@ -12,8 +12,8 @@ export class Logger implements EntitySubscriberInterface {
     console.log("Inserted", event.entity.id);
   }
 
-  afterUpdate(event: UpdateEvent<any>) {
-    console.log("Updated", event.entity);
+  beforeUpdate(event: UpdateEvent<any>) {
+    console.log("Updating", event.entity);
   }
 
   beforeRemove(event: RemoveEvent<any>) {

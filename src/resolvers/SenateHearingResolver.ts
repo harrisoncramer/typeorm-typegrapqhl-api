@@ -37,7 +37,7 @@ export class SenateHearingResolver {
       .set({ ...input })
       .where("id = :id", { id })
       .execute();
-    return await SenateHearing.findOne({ id });
+    return await findOne(SenateHearing, id);
   }
 
   @Query(() => SenateHearing)

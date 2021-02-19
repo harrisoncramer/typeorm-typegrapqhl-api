@@ -12,7 +12,7 @@ module.exports = [
     username: "postgres",
     database: "postgres",
     synchronize: false,
-    logging: true,
+    logging: false, // Turn on if you want to see the PSQL queries
     entities: ["src/entity/**/*.ts"],
     migrations: ["src/migration/**/*.ts"],
     subscribers: ["src/subscriber/**/*.ts"],

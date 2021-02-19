@@ -38,7 +38,7 @@ export class HouseHearingResolver {
       .set({ ...input })
       .where("id = :id", { id })
       .execute();
-    return await HouseHearing.findOne({ id });
+    return await findOne(HouseHearing, id);
   }
 
   @Query(() => HouseHearing)
