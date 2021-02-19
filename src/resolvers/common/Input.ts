@@ -48,3 +48,24 @@ export class HearingInput implements Partial<HouseHearing> {
   @Field()
   committee: string;
 }
+
+@InputType({ description: "Input type to modfiy hearing (house and senate)." })
+export class HearingModifyInput implements Partial<HouseHearing> {
+  @Field({ nullable: true })
+  title?: string;
+
+  @Field({ nullable: true })
+  date?: Date;
+
+  @Field({ nullable: true })
+  time?: Date;
+
+  @Field({ nullable: true })
+  location?: string;
+
+  @Field({ nullable: true })
+  link?: string;
+
+  @Field({ nullable: true })
+  text?: string;
+}

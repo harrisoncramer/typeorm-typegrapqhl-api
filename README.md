@@ -17,6 +17,8 @@ In production in order to open the API up for the world you'll also need to open
 
 This application is designed to run entirely on the docker instance, and you should not install packages locally to your `node_modules` folder because they will not get picked up. Instead, install them directly into the container and the changes will get mapped to your local `package.json` file, which is volume mounted. To install npm packages (and uninstall them) run `docker exec typeorm-api npm install PACKAGE_NAME` and `docker exec typeorm-api npm uninstall PACKAGE_NAME`
 
+Then you can install them with `npm install` locally.
+
 ### Production
 
 1. If you're running this on EC2 (or another cloud provider with minimal configuration) you'll need docker-compose and docker (and git). Run the `user.sh` script to create a new user.\*\* Login to your new user and then run the `setup.sh` script to download and configure docker and docker-compose.

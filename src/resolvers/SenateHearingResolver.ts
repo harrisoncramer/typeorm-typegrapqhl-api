@@ -1,7 +1,11 @@
 import { Query, Resolver, Mutation, Arg } from "type-graphql";
 import { getRepository } from "typeorm";
 import { SenateHearing } from "../entity/Hearing";
-import { SkipLimitFilterInput, HearingInput } from "./common/Input";
+import {
+  SkipLimitFilterInput,
+  HearingInput,
+  HearingModifyInput,
+} from "./common/Input";
 import { findAndRemove } from "./common/Methods";
 
 @Resolver()
@@ -20,6 +24,20 @@ export class SenateHearingResolver {
       .addOrderBy(`hearing.${input.orderField}`, input.order)
       .getMany();
     return results;
+  }
+
+  @Mutation(() => SenateHearing)
+  async modifySenateHearing(
+    @Arg("id") id: string,
+    @Arg("input") input: HearingModifyInput
+  ) {
+    let query = getRepository(SenateHearing).createQueryBuilder("hearing");
+    await query
+      .update(SenateHearing)
+      .set({ ...input })
+      .where("id = :id", { id })
+      .execute();
+    return await SenateHearing.findOne({ id });
   }
 
   @Query(() => SenateHearing)
