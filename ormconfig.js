@@ -11,7 +11,7 @@ module.exports = [
     password: "postgres",
     username: "postgres",
     database: "postgres",
-    synchronize: true,
+    synchronize: false,
     logging: true,
     entities: ["src/entity/**/*.ts"],
     migrations: ["src/migration/**/*.ts"],
@@ -30,7 +30,7 @@ module.exports = [
     password: process.env.POSTGRES_PASSWORD,
     username: process.env.POSTGRES_USER,
     database: process.env.POSTGRES_DB,
-    synchronize: true, // switch this to false once you have the initial tables created and use migrations instead
+    synchronize: false, // switch this to false once you have the initial tables created and use migrations instead
     logging: false,
     entities: ["./dist/entity/*.js"],
     migrations: ["./dist/migration/*.js"],

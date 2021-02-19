@@ -4,10 +4,10 @@ FROM node:15.4.0-alpine3.10
 # Specify that when you create the container, put the application inside the /app container
 WORKDIR /app
 
-# Copy our package.json file into the /app folder (wildcard allows for package.lock.json)
-COPY package*.json /app
+# Copy our package.json + package-lock.json file into the /app folder (wildcard allows for package.lock.json)
+COPY package*.json /app/
 
-RUN npm install 
+RUN npm ci 
 
 # Copy source files + compilation configuration, db connection options, etc.
 COPY ./src .
