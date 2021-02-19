@@ -5,8 +5,6 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-      args:
-        ENV: production
     environment:
       ENV: production
       PORT: 1234
