@@ -2,6 +2,7 @@ import { Query, Resolver, Mutation, Arg, InputType, Field } from "type-graphql";
 import { getRepository } from "typeorm";
 import { SenateDisclosure } from "../entity/SenateDisclosure";
 import { SkipLimitFilterInput } from "./common/Input";
+import { findAndRemove } from "./common/Methods";
 
 @InputType({ description: "Input type to add a disclosure." })
 class SenateDisclosureInput implements Partial<SenateDisclosure> {
@@ -45,7 +46,7 @@ export class SenateDisclosureResolver {
 
   @Mutation(() => String)
   async deleteSenateDisclosure(@Arg("id") id: string) {
-    await SenateDisclosure.delete({ id });
+    await findAndRemove(SenateDisclosure, id);
     return id;
   }
 

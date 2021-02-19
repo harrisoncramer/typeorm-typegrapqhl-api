@@ -2,6 +2,7 @@ import { Query, Resolver, Mutation, Arg } from "type-graphql";
 import { getRepository } from "typeorm";
 import { SenateHearing } from "../entity/Hearing";
 import { SkipLimitFilterInput, HearingInput } from "./common/Input";
+import { findAndRemove } from "./common/Methods";
 
 @Resolver()
 export class SenateHearingResolver {
@@ -29,7 +30,7 @@ export class SenateHearingResolver {
 
   @Mutation(() => String)
   async deleteSenateHearing(@Arg("id") id: string) {
-    await SenateHearing.delete({ id });
+    await findAndRemove(SenateHearing, id);
     return id;
   }
 
