@@ -1,7 +1,7 @@
 import { Query, Resolver, Mutation, Arg, InputType, Field } from "type-graphql";
 import { getRepository } from "typeorm";
 import { SenateDisclosure } from "../entity/SenateDisclosure";
-import { SkipLimitFilterInput } from "./common/Input";
+import { SkipLimitFilterDateRangeInput } from "./common/Input";
 import { findAndRemove, findOne } from "./common/Methods";
 
 @InputType({ description: "Input type to add a disclosure." })
@@ -21,7 +21,9 @@ class SenateDisclosureInput implements Partial<SenateDisclosure> {
 @Resolver()
 export class SenateDisclosureResolver {
   @Query(() => [SenateDisclosure])
-  async findSenateDisclosures(@Arg("input") input: SkipLimitFilterInput) {
+  async findSenateDisclosures(
+    @Arg("input") input: SkipLimitFilterDateRangeInput
+  ) {
     let query = getRepository(SenateDisclosure).createQueryBuilder(
       "disclosure"
     );
@@ -30,6 +32,15 @@ export class SenateDisclosureResolver {
         name: `%${input.filter}%`,
       });
     }
+
+    // Filter by date (without provided date, set to current day)
+    if (input.endDate || input.startDate) {
+      query = query.andWhere(`hearing.date between :startDate and :endDate`, {
+        startDate: input.startDate || new Date().toISOString(),
+        endDate: input.endDate || new Date().toISOString(),
+      });
+    }
+
     const results = await query
       .offset(input.skip)
       .limit(input.limit)

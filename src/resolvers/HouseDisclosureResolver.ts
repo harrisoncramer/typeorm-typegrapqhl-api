@@ -1,7 +1,7 @@
 import { Query, Resolver, Mutation, Arg, InputType, Field } from "type-graphql";
 import { getRepository } from "typeorm";
 import { HouseDisclosure } from "../entity/HouseDisclosure";
-import { SkipLimitFilterInput } from "./common/Input";
+import { SkipLimitFilterDateRangeInput } from "./common/Input";
 import { findAndRemove, findOne } from "./common/Methods";
 
 @InputType({ description: "Input type to add a disclosure." })
@@ -28,13 +28,24 @@ class HouseDisclosureInput implements Partial<HouseDisclosure> {
 @Resolver()
 export class HouseDisclosureResolver {
   @Query(() => [HouseDisclosure])
-  async findHouseDisclosures(@Arg("input") input: SkipLimitFilterInput) {
+  async findHouseDisclosures(
+    @Arg("input") input: SkipLimitFilterDateRangeInput
+  ) {
     let query = getRepository(HouseDisclosure).createQueryBuilder("disclosure");
     if (input.field && input.filter) {
       query = query.where(`disclosure.${input.field} like :name`, {
         name: `%${input.filter}%`,
       });
     }
+
+    // Filter by date (without provided date, set to current day)
+    if (input.endDate || input.startDate) {
+      query = query.andWhere(`hearing.date between :startDate and :endDate`, {
+        startDate: input.startDate || new Date().toISOString(),
+        endDate: input.endDate || new Date().toISOString(),
+      });
+    }
+
     const results = await query
       .offset(input.skip)
       .limit(input.limit)

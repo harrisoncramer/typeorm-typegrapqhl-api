@@ -1,9 +1,9 @@
 import { HouseHearing } from "src/entity";
 import { Field, InputType } from "type-graphql";
 
-@InputType({ description: "Input type to set skip and limit in a find query." })
+@InputType({ description: "Input type to set skip and limit." })
 export class SkipLimitInput {
-  @Field()
+  @Field({ defaultValue: "date" })
   orderField: string;
   @Field({ nullable: true })
   order: "ASC" | "DESC";
@@ -13,7 +13,7 @@ export class SkipLimitInput {
   limit: number;
 }
 
-@InputType({ description: "Input type to use filter w/ skip + limit input." })
+@InputType({ description: "Input type to use filter, skip + limit." })
 export class SkipLimitFilterInput extends SkipLimitInput {
   @Field({ nullable: true })
   field?: string;
@@ -22,7 +22,16 @@ export class SkipLimitFilterInput extends SkipLimitInput {
   filter?: string;
 }
 
-@InputType({ description: "Input type to add hearing (house and senate)." })
+@InputType({ description: "Input type to use dates, filter, skip + limit" })
+export class SkipLimitFilterDateRangeInput extends SkipLimitFilterInput {
+  @Field({ nullable: true })
+  startDate?: Date;
+
+  @Field({ nullable: true })
+  endDate?: Date;
+}
+
+@InputType({ description: "Input type to add Hearing" })
 export class HearingInput implements Partial<HouseHearing> {
   @Field()
   title: string;
@@ -49,7 +58,7 @@ export class HearingInput implements Partial<HouseHearing> {
   committee: string;
 }
 
-@InputType({ description: "Input type to modfiy hearing (house and senate)." })
+@InputType({ description: "Input type to modfiy Hearing" })
 export class HearingModifyInput implements Partial<HouseHearing> {
   @Field({ nullable: true })
   title?: string;

@@ -2,7 +2,7 @@ import { Query, Resolver, Mutation, Arg } from "type-graphql";
 import { getRepository } from "typeorm";
 import { HouseHearing } from "../entity/Hearing";
 import {
-  SkipLimitFilterInput,
+  SkipLimitFilterDateRangeInput,
   HearingInput,
   HearingModifyInput,
 } from "./common/Input";
@@ -11,11 +11,21 @@ import { findAndRemove, findOne } from "./common/Methods";
 @Resolver()
 export class HouseHearingResolver {
   @Query(() => [HouseHearing])
-  async findHouseHearings(@Arg("input") input: SkipLimitFilterInput) {
+  async findHouseHearings(@Arg("input") input: SkipLimitFilterDateRangeInput) {
     let query = getRepository(HouseHearing).createQueryBuilder("hearing");
+
+    // Search by string
     if (input.field && input.filter) {
       query = query.where(`hearing.${input.field} like :search`, {
         search: `%${input.filter}%`,
+      });
+    }
+
+    // Filter by date (without provided date, set to current day)
+    if (input.endDate || input.startDate) {
+      query = query.andWhere(`hearing.date between :startDate and :endDate`, {
+        startDate: input.startDate || new Date().toISOString(),
+        endDate: input.endDate || new Date().toISOString(),
       });
     }
 
