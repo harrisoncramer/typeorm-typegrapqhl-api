@@ -1,11 +1,11 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, ID } from "type-graphql";
 import { IsEmail } from "class-validator";
 
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
-  @Field()
+  @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
@@ -13,12 +13,11 @@ export class User extends BaseEntity {
   @Column()
   name: string;
 
-  @IsEmail()
   @Field()
-  @Column()
+  @IsEmail()
+  @Column("text", { unique: true })
   email: string;
 
-  @Field()
   @Column()
   password: string;
 }

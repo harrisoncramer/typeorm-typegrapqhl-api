@@ -1,7 +1,3 @@
-// This application will run SQLLite in development by default and PostgresQL in production.
-// Although you can technically run the docker-compose.pg.yml file in development, by default
-// your API will not connect to that server. You must edit the configuration file below if you'd
-// like to connect to the local PostgresQL development server by default.
 module.exports = [
   {
     name: "development",
@@ -11,7 +7,7 @@ module.exports = [
     password: "postgres",
     username: "postgres",
     database: "postgres",
-    synchronize: false,
+    synchronize: true,
     logging: false, // Turn on if you want to see the PSQL queries
     entities: ["src/entity/**/*.ts"],
     migrations: ["src/migration/**/*.ts"],

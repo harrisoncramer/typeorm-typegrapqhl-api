@@ -1,4 +1,4 @@
-import { Query, Resolver, Mutation, Arg } from "type-graphql";
+import { Query, Resolver, Mutation, Arg, Authorized } from "type-graphql";
 import { getRepository } from "typeorm";
 import { HouseHearing } from "../entity/Hearing";
 import {
@@ -10,6 +10,7 @@ import { findAndRemove, findOne } from "./common/Methods";
 
 @Resolver()
 export class HouseHearingResolver {
+  @Authorized()
   @Query(() => [HouseHearing])
   async findHouseHearings(@Arg("input") input: SkipLimitFilterDateRangeInput) {
     let query = getRepository(HouseHearing).createQueryBuilder("hearing");

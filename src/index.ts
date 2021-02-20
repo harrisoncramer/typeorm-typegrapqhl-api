@@ -4,6 +4,7 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import {
+  UserResolver,
   SenateDisclosureResolver,
   HouseDisclosureResolver,
   HouseHearingResolver,
@@ -38,18 +39,19 @@ import {
     introspection: true,
     schema: await buildSchema({
       resolvers: [
+        UserResolver,
         HouseDisclosureResolver,
         SenateDisclosureResolver,
         HouseHearingResolver,
         SenateHearingResolver,
       ],
+      authChecker: ({ context: { req } }) => !!req.session.userId,
       validate: true,
     }),
-    context: ({ req, res }) => {
+    context: ({ req }) => {
       // Add user to context if authenticated
-      const token = req.headers.authorization || "";
+      const _token = req.headers.authorization || "";
       const user = null; // getUser(token)
-      console.log(token, res);
       return { user };
     },
   });
