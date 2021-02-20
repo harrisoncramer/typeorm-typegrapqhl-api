@@ -45,7 +45,13 @@ import {
       ],
       validate: true,
     }),
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => {
+      // Add user to context if authenticated
+      const token = req.headers.authorization || "";
+      const user = null; // getUser(token)
+      console.log(token, res);
+      return { user };
+    },
   });
 
   apolloServer.applyMiddleware({ app, cors: true });
