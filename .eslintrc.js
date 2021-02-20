@@ -12,6 +12,7 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
+    "@typescript-eslint/ban-types": ["warn"],
     "no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
     "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
     "@typescript-eslint/explicit-module-boundary-types": "off",

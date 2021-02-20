@@ -2,6 +2,7 @@ import { Resolver, Mutation, Arg, InputType, Field } from "type-graphql";
 import { User } from "../entity";
 import bcryptjs from "bcryptjs";
 import { IsEmail, Length } from "class-validator";
+import { IsEmailAlreadyExists } from "./validators/isEmailAlreadyInUse";
 
 @InputType()
 class UserInput {
@@ -11,6 +12,7 @@ class UserInput {
 
   @Field()
   @IsEmail()
+  @IsEmailAlreadyExists({ message: "That email already exists." })
   email: string;
 
   @Field()
@@ -19,10 +21,6 @@ class UserInput {
 
 @Resolver()
 export class UserResolver {
-  @Mutation(() => User)
-  async hello() {
-    return "HI There!";
-  }
   @Mutation(() => User)
   async register(@Arg("input") input: UserInput): Promise<User> {
     const { name, password, email } = input;
