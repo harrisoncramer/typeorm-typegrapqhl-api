@@ -1,6 +1,5 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
-import { IsEmail } from "class-validator";
 
 @ObjectType()
 @Entity()
@@ -14,7 +13,6 @@ export class User extends BaseEntity {
   name: string;
 
   @Field()
-  @IsEmail()
   @Column("text", { unique: true })
   email: string;
 
