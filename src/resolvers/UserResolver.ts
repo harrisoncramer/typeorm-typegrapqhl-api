@@ -1,4 +1,12 @@
-import { Resolver, Mutation, Arg, InputType, Field, Ctx } from "type-graphql";
+import {
+  Resolver,
+  Mutation,
+  Query,
+  Arg,
+  InputType,
+  Field,
+  Ctx,
+} from "type-graphql";
 import { User } from "../entity";
 import bcryptjs from "bcryptjs";
 import { IsEmail, Length } from "class-validator";
@@ -29,6 +37,14 @@ class UserInput {
 
 @Resolver()
 export class UserResolver {
+  // Get current user based on session userId
+  @Query(() => User, { nullable: true })
+  async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
+    if (!ctx.req.session.userId) return undefined;
+    return User.findOne(ctx.req.session.userId);
+  }
+
+  // Login user
   @Mutation(() => User, { nullable: true })
   async login(
     @Arg("email") email: string,
@@ -41,7 +57,7 @@ export class UserResolver {
     const valid = await bcryptjs.compare(password, user.password);
     if (!valid) return null;
 
-    // Set Cookie in current context
+    // Set Cookie in session inside Redis
     ctx.req.session.userId = user.id;
 
     return user;
