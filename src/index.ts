@@ -6,6 +6,7 @@ import { buildSchema } from "type-graphql";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { redis } from "./redis";
+import cors from "cors";
 
 import {
   UserResolver,
@@ -17,16 +18,16 @@ import {
 
 (async () => {
   const app = express();
+  app.use(cors({ credentials: true, origin: "http://localhost:1234" })); // The URL of the ReactApp
 
+  // Connect to PostgreSQL DB
   const options = await getConnectionOptions(process.env.ENV);
-
   let retries = 5;
   while (retries) {
     try {
       await createConnection({ ...options, name: "default" });
       break;
     } catch (err) {
-      // Retry every two seconds...
       console.error(err);
       retries -= 1;
       console.error(`Retries left ${retries}`);
@@ -35,18 +36,18 @@ import {
   }
 
   if (retries === 0 && !!getConnection()) {
-    throw new Error("Not able to connect");
+    throw new Error("Not able to connect to PostgreSQL DB.");
   }
 
+  // Create session middleware for JWTs using Redis
   const RedisStore = connectRedis(session);
-
   app.use(
     session({
       store: new RedisStore({
         client: redis,
       }),
       name: "qid",
-      secret: "SECRET",
+      secret: process.env.SECRET || "wiuy10b1la",
       resave: false,
       saveUninitialized: false,
       cookie: {
@@ -57,6 +58,7 @@ import {
     })
   );
 
+  // Create ApolloServer instance
   const apolloServer = new ApolloServer({
     playground: process.env.ENV === "development",
     introspection: true,
@@ -71,18 +73,14 @@ import {
       authChecker: ({ context: { req } }) => !!req.session.userId,
       validate: true,
     }),
-    context: ({ req }) => {
-      // Add user to context if authenticated
-      const _token = req.headers.authorization || "";
-      const user = null; // getUser(token)
-      return { user };
-    },
+    context: ({ req }) => ({ req }),
   });
 
+  // Apply Apollo and start up express application
+  // Note: We listen on port 1234, but expose that on process.env.PORT in docker-compose
   apolloServer.applyMiddleware({ app, cors: true });
   app.listen(1234, () => {
-    console.log(
-      `🔥 API exposed in ${process.env.ENV} at http://localhost:${process.env.PORT}/graphql` // This is what the port will be mapped to
-    );
+    console.log(`🔥 API running in ${process.env.ENV}`);
+    console.log(`🔬 http://localhost:${process.env.PORT}/graphql`);
   });
 })();
