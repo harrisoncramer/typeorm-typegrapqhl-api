@@ -15,9 +15,10 @@ In production in order to open the API up for the world you'll also need to open
 
 ### Installing NPM Packages
 
-This application is designed to run entirely on the docker instance, and you should not install packages locally to your `node_modules` folder because they will not get picked up. Instead, install them directly into the container and the changes will get mapped to your local `package.json` file, which is volume mounted. To install npm packages (and uninstall them) run `docker exec typeorm-api npm install PACKAGE_NAME` and `docker exec typeorm-api npm uninstall PACKAGE_NAME`
+This application is designed to run entirely on the docker instance, and you should only install packages locally to your `node_modules` folder after you install them in the instance.
 
-Then you can install them with `npm install` locally.
+1. Install the new `npm` package in the container `docker exec typeorm-api npm install PACKAGE_NAME`
+2. Install the packages locally by running `npm install` (no need to specify the packages, because they will get picked up in your package.json file)
 
 ### Production
 
