@@ -18,6 +18,7 @@ services:
       - ".env.development"
     depends_on:
       - db
+      - redis
     restart: always
   db:
     image: "postgres:9.6"
@@ -30,3 +31,10 @@ services:
       - "./postgres/development/data:/var/lib/postgresql/data:delegated"
     ports:
       - "5432:5432"
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    volumes: 
+      - "./redis/development/data:/var/lib/redis"
+    expose:
+      - 6379

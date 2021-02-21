@@ -17,6 +17,8 @@ services:
     command: "npm run start:production"
     ports:
       - 1234:1234
+    depends_on:
+      - redis
   reverse:
     container_name: reverse
     hostname: reverse
@@ -26,3 +28,11 @@ services:
     ports:
       - 80:80
       - 443:443
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    volumes: 
+      - "./redis/production/data:/var/lib/redis"
+    expose:
+      - 6379
+

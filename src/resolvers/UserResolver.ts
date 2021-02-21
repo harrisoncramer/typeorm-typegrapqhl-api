@@ -7,7 +7,7 @@ import { IsEmailAlreadyExists } from "./validators/isEmailAlreadyInUse";
 @InputType()
 class UserInput {
   @Field()
-  @Length(1, 255)
+  @Length(1, 255, { message: "Name too long." })
   name: string;
 
   @Field()

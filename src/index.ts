@@ -3,6 +3,9 @@ import { createConnection, getConnectionOptions, getConnection } from "typeorm";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
+import session from "express-session";
+import connectRedis from "connect-redis";
+import { redis } from "./redis";
 
 import {
   UserResolver,
@@ -34,6 +37,25 @@ import {
   if (retries === 0 && !!getConnection()) {
     throw new Error("Not able to connect");
   }
+
+  const RedisStore = connectRedis(session);
+
+  app.use(
+    session({
+      store: new RedisStore({
+        client: redis,
+      }),
+      name: "qid",
+      secret: "SECRET",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: process.env.ENV === "production",
+        maxAge: 1000 * 60 * 60 * 24 * 7 * 365,
+      },
+    })
+  );
 
   const apolloServer = new ApolloServer({
     playground: process.env.ENV === "development",

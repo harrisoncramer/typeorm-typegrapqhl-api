@@ -16,6 +16,7 @@ export class isEmailAlreadyExists implements ValidatorConstraintInterface {
   }
 }
 
+// Custom decorator is a factory function that gets called on the class
 export function IsEmailAlreadyExists(validationOptions?: ValidationOptions) {
   return function (object: Object, propertyName: string) {
     registerDecorator({
