@@ -1,0 +1,42 @@
+version: "3"
+services:
+  api:
+    image: "typeorm-api:test" 
+    container_name: "typeorm-api"
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+      - "./package.json:/app/package.json" # Will overwrite local package.json file
+    ports:
+      - "9876:1234"
+    environment:
+      ENV: development
+      PORT: "9876"
+    command: "npm run start:test"
+    stdin_open: true
+    tty: true
+    env_file:
+      - ".env.test"
+    depends_on:
+      - db
+      - redis
+  db:
+    image: "postgres:9.6"
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - "./postgres/test/data:/var/lib/postgresql/data:delegated"
+    ports:
+      - "5432:5432"
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    volumes: 
+      - "./redis/test/data:/var/lib/redis"
+    expose:
+      - 6379

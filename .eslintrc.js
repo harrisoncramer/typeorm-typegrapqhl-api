@@ -12,9 +12,10 @@ module.exports = {
   },
   plugins: ["@typescript-eslint"],
   rules: {
-    "@typescript-eslint/ban-types": ["warn"],
     "no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
+    "@typescript-eslint/ban-types": ["warn"],
     "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
-    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/explicit-module-boundary-types": ["off"],
+    "@typescript-eslint/no-inferrable-types": ["off"],
   },
 };
