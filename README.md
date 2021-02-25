@@ -11,7 +11,7 @@ In production in order to open the API up for the world you'll also need to open
 1. Define any additional variables for development inside a `.env.development` file. By default, the `.env.development` file doesn't require any variables, but must exist.
 2. Run the `docker-compose` command to start up your instance: `PORT=1451 docker-compose -f docker-compose.dev.yml up` which will run your API locally, and expose it on `http://localhost:1451/graphql`
 
-## Testing
+### Testing
 
 1. Define any additional variables inside a `.env.test` file. By default, the `.env.development` file doesn't require any variables, but must exist.
 2. Run the `docker-compose` command to start up your `jest` test suite (by default you must have port `9876` open): `docker-compose -f docker-compose.test.yml run api`
