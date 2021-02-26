@@ -21,7 +21,7 @@ services:
       - redis
     restart: always
   db:
-    image: "postgres:9.6"
+    image: "postgres:13.2-alpine"
     container_name: postgres
     environment:
       POSTGRES_PASSWORD: postgres
@@ -32,7 +32,7 @@ services:
     ports:
       - "5432:5432"
   redis:
-    image: "redis:alpine"
+    image: "redis:6.2.0-alpine"
     container_name: redis
     volumes: 
       - "./redis/development/data:/var/lib/redis"
