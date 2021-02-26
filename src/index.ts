@@ -1,25 +1,19 @@
 import "reflect-metadata";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
 import { mySession } from "./redis";
 import { connect } from "./postgres";
 import cors from "cors";
-
-import {
-  UserResolver,
-  SenateDisclosureResolver,
-  HouseDisclosureResolver,
-  HouseHearingResolver,
-  SenateHearingResolver,
-} from "./resolvers";
+import { createSchema } from "./utils/createSchema";
 
 (async () => {
   const app = express();
   app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // The URL of the ReactApp
 
   // Connect to PostgreSQL DB
-  await connect();
+  if (["development", "production"].includes(process.env.ENV as string)) {
+    await connect();
+  }
 
   // Add session middleware for storing cookies with Redis
   app.use(mySession);
@@ -28,17 +22,7 @@ import {
   const apolloServer = new ApolloServer({
     playground: process.env.ENV === "development",
     introspection: true,
-    schema: await buildSchema({
-      resolvers: [
-        UserResolver,
-        HouseDisclosureResolver,
-        SenateDisclosureResolver,
-        HouseHearingResolver,
-        SenateHearingResolver,
-      ],
-      authChecker: ({ context: { req } }) => !!req.session.userId,
-      validate: true,
-    }),
+    schema: await createSchema(),
     context: ({ req }) => ({ req }),
   });
 
