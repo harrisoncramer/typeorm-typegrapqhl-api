@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# This bash script will help you to run the docker containers quickly
+# It's a faster way of punching out the startup/end commands
+
+# Valid commands (not including parameters):
+# dock dev start
+# dock dev stop
+# dock test start
+# dock test stop
+# dock prod start
+# dock prod stop
+
+usage="environment command [--port=9211|-p=9211]"
+if [ $# == 0 ]; then
+  echo "$usage"
+  echo "Example: 'dock dev start -p=2222'"
+  echo "Example: 'dock prod stop'"
+  exit;
+fi;
+
+# Default args
+PORT=1234
+MAIN_ARGS=""
+
+for arg in "$@"
+do
+    case $arg in
+        -p=*|--port=*)
+        PORT="${arg#*=}"
+        shift # Remove --port= from processing
+        ;;
+        *)
+        MAIN_ARGS="$MAIN_ARGS $1"
+        shift # Add main arguments (aka up/down dev/test/prod)
+        ;;
+    esac
+done
+
+args=`echo $MAIN_ARGS`
+
+if [[ "$args" == "dev start" ]]; then
+    PORT="$PORT" docker-compose -f docker-compose.dev.yml up
+fi
+
+if [[ "$args" == "dev stop" ]]; then
+    PORT="$PORT" docker-compose -f docker-compose.dev.yml down
+fi
+
+if [[ "$args" == "test start" ]]; then
+    PORT="$PORT" docker-compose -f docker-compose.test.yml run api
+fi
+
+if [[ "$args" == "test stop" ]]; then
+    PORT="$PORT" docker-compose -f docker-compose.test.yml down
+fi
+
+if [[ "$args" == "prod start" ]]; then
+    PORT="$PORT" docker-compose -f docker-compose.prod.yml up
+fi
+
+if [[ "$args" == "prod stop" ]]; then
+    PORT="$PORT" docker-compose -f docker-compose.prod.yml down
+fi
