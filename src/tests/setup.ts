@@ -1,4 +1,4 @@
-import { db } from "./db";
+import { connect } from "../postgres";
 
 // Clears out old data
-db(true).then(() => process.exit());
+connect().then(() => process.exit());
