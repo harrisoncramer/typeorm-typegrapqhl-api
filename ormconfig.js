@@ -1,5 +1,20 @@
 module.exports = [
   {
+    name: "test",
+    type: "postgres",
+    host: "db",
+    port: 5432,
+    password: "postgres",
+    username: "postgres",
+    database: "postgres", // Will this db exist...?
+    logging: false,
+    entities: ["src/entity/**/*.ts"],
+    migrations: ["src/migration/**/*.ts"],
+    subscribers: ["src/subscriber/**/*.ts"],
+    synchronize: process.env.DROP ? process.env.DROP === "true" : true, /// Drop if not defined. Must do this syntax because env variables are strings
+    dropSchema: process.env.DROP ? process.env.DROP === "true" : true, /// Drop if not defined. Must do this syntax because env variables are strings
+  },
+  {
     name: "development",
     type: "postgres",
     host: "db",

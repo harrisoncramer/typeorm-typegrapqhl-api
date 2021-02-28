@@ -12,6 +12,7 @@ RUN npm ci
 # Copy source files + compilation configuration, db connection options, etc.
 COPY ./src .
 COPY tsconfig.json .
+COPY jest.config.js .
 COPY ormconfig.js .
 COPY modules.d.ts .
 
