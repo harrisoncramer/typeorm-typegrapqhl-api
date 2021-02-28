@@ -65,6 +65,21 @@ export class UserResolver {
     return user;
   }
 
+  @Mutation(() => Boolean, { nullable: true })
+  async unregister(
+    @Arg("email") email: string,
+    @Arg("password") password: string
+  ): Promise<boolean | null> {
+    const user = await User.findOne({ where: { email } });
+    if (!user) return null;
+
+    const valid = await bcryptjs.compare(password, user.password);
+    if (!valid) return null;
+
+    await user.remove();
+    return true;
+  }
+
   @Mutation(() => User)
   async register(@Arg("input") input: UserInput): Promise<User> {
     const { name, password, email } = input;

@@ -25,6 +25,15 @@ mutation Register($input: UserInput!) {
 }
 `;
 
+const unregisterMutation = `
+mutation Unregister($email: String! $password: String!) {
+  unregister(
+    email: $email
+    password: $password
+  )
+}
+`;
+
 describe("User resolver", () => {
   const user = {
     name: faker.name.firstName(),
@@ -139,5 +148,51 @@ describe("User resolver", () => {
       where: { email: userInvalidPassword.email },
     });
     expect(dbUser).toBeUndefined();
+  });
+
+  it("Should unregister user", async () => {
+    await gCall({
+      source: registerMutation,
+      variableValues: {
+        input: user,
+      },
+    });
+
+    await gCall({
+      source: unregisterMutation,
+      variableValues: {
+        email: user.email,
+        password: user.password,
+      },
+    });
+
+    const dbUser = await User.findOne({
+      where: { email: user.email },
+    });
+    expect(dbUser).toBeUndefined();
+  });
+
+  it("Should not unregister user with wrong password", async () => {
+    await gCall({
+      source: registerMutation,
+      variableValues: {
+        input: user,
+      },
+    });
+
+    const response = await gCall({
+      source: unregisterMutation,
+      variableValues: {
+        email: user.email,
+        password: "wrongone",
+      },
+    });
+
+    expect(response.data!.unregister).toBeNull();
+
+    const dbUser = await User.findOne({
+      where: { email: user.email },
+    });
+    expect(dbUser!.name).toBe(user.name);
   });
 });
