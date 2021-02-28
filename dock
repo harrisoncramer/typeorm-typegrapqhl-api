@@ -56,7 +56,13 @@ if [[ $args == install* ]]; then
   if [[ -z "$devContainer" ]]; then
     echo "Please start your development environment to install npm packages."
   else
-    docker exec $devContainer npm install $MAIN_ARGS
+    allContainers=$(docker ps -q --filter name=typeorm*)
+    for container in $allContainers
+    do
+      echo "Installing in $container ..."
+      docker exec $container npm install $MAIN_ARGS
+    done
+    echo "Installing locally..."
     npm install
   fi
 elif [[ $args == uninstall* ]]; then
@@ -64,8 +70,13 @@ elif [[ $args == uninstall* ]]; then
   if [[ -z "$devContainer" ]]; then
     echo "Please start your development environment to uninstall npm packages."
   else
-    docker exec $devContainer npm uninstall $MAIN_ARGS
-    npm install
+    allContainers=$(docker ps -q --filter name=typeorm*)
+    for container in $allContainers
+    do
+      echo "Uninstalling in $container ..."
+      docker exec $container npm uninstall $MAIN_ARGS
+    done
+    npm uninstall $MAIN_ARGS
   fi
 elif [[ "$args" == "build" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml build \
