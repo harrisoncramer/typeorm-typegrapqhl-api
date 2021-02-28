@@ -10,12 +10,16 @@
 # dock test stop
 # dock prod start
 # dock prod stop
+# dock install
+# dock uninstall
 
-usage="./dock ENV CMD [--port|-p] \
+usage="./dock ENV CMD [--port|-p] [args] \
 
 Example: 'dock dev start -p=2222'
 Example: 'dock prod stop'
-Example: 'dock build'"
+Example: 'dock build'
+Example: 'dock install underscore yargs'
+Example: 'dock uninstall underscore yargs'"
 
 if [ $# == 0 ]; then
   echo "$usage"
@@ -42,7 +46,28 @@ done
 
 args=`echo $MAIN_ARGS`
 
-if [[ "$args" == "build" ]]; then
+
+#########################
+## Available functions ##
+#########################
+
+if [[ $args == install* ]]; then
+  devContainer=$(docker ps -q --filter ancestor="typeorm-api:development")
+  if [[ -z "$devContainer" ]]; then
+    echo "Please start your development environment to install npm packages."
+  else
+    docker exec $devContainer npm install $MAIN_ARGS
+    npm install
+  fi
+elif [[ $args == uninstall* ]]; then
+  devContainer=$(docker ps -q --filter ancestor="typeorm-api:development")
+  if [[ -z "$devContainer" ]]; then
+    echo "Please start your development environment to uninstall npm packages."
+  else
+    docker exec $devContainer npm uninstall $MAIN_ARGS
+    npm install
+  fi
+elif [[ "$args" == "build" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml build \
       && docker-compose -f docker-compose.prod.yml build \
       && PORT="$PORT" docker-compose -f docker-compose.test.yml build
