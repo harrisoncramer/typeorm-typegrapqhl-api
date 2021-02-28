@@ -39,9 +39,15 @@ describe("User resolver", () => {
   };
 
   const userInvalidPassword = {
-    name: "name",
-    email: "faker@gmail.com",
-    password: "a",
+    name: faker.name.firstName(),
+    email: faker.internet.email(),
+    password: "hi",
+  };
+
+  const userPwnedPassword = {
+    name: faker.name.firstName(),
+    email: faker.internet.email(),
+    password: "123456789",
   };
 
   it("Should register user with valid credentials.", async () => {
@@ -111,8 +117,24 @@ describe("User resolver", () => {
       },
     });
 
-    //const error = response.errors![0].originalError;
-    //expect(error).toBeInstanceOf(ArgumentValidationError);
+    const error = response.errors![0].originalError;
+    expect(error).toBeInstanceOf(ArgumentValidationError);
+    const dbUser = await User.findOne({
+      where: { email: userInvalidPassword.email },
+    });
+    expect(dbUser).toBeUndefined();
+  });
+
+  it("Should reject user with common password (that's easily hacked).", async () => {
+    const response = await gCall({
+      source: registerMutation,
+      variableValues: {
+        input: userPwnedPassword,
+      },
+    });
+
+    const error = response.errors![0].originalError;
+    expect(error).toBeInstanceOf(ArgumentValidationError);
     const dbUser = await User.findOne({
       where: { email: userInvalidPassword.email },
     });

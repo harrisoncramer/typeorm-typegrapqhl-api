@@ -5,6 +5,8 @@ import {
   ValidatorConstraintInterface,
 } from "class-validator";
 
+import { passwords } from "../../utils/mostCommonPasswords";
+
 @ValidatorConstraint({ async: true })
 export class isPasswordTooWeak implements ValidatorConstraintInterface {
   validate(password: string) {
@@ -13,6 +15,7 @@ export class isPasswordTooWeak implements ValidatorConstraintInterface {
       "/((?=.*d)|(?=.*W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/"
     );
     if (password.match(simplePass)) return false;
+    if (passwords.includes(password)) return false;
     return true;
   }
 }
