@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     "no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
     "@typescript-eslint/ban-types": ["warn"],
+    "@typescript-eslint/no-non-null-assertion": ["off"],
     "@typescript-eslint/no-unused-vars": ["warn", { varsIgnorePattern: "^_" }],
     "@typescript-eslint/explicit-module-boundary-types": ["off"],
     "@typescript-eslint/no-inferrable-types": ["off"],

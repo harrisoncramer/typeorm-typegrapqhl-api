@@ -17,6 +17,7 @@ export const gCall = async ({ source, variableValues }: Options) => {
   if (!schema) {
     schema = await createSchema();
   }
+
   return graphql({
     schema,
     source,

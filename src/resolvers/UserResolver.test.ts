@@ -2,6 +2,8 @@ import { connect } from "../postgres";
 import { Connection } from "typeorm";
 import { gCall } from "../tests/gCall";
 import faker from "faker";
+import { User } from "../entity";
+import { ArgumentValidationError } from "type-graphql";
 
 let conn: Connection;
 beforeAll(async () => {
@@ -37,9 +39,9 @@ describe("User resolver", () => {
   };
 
   const userInvalidPassword = {
-    name: faker.name.firstName(),
-    email: faker.internet.email(),
-    password: "weak",
+    name: "name",
+    email: "faker@gmail.com",
+    password: "a",
   };
 
   it("Should register user with valid credentials.", async () => {
@@ -58,6 +60,9 @@ describe("User resolver", () => {
         },
       },
     });
+
+    const dbUser = await User.findOne({ where: { email: user.email } });
+    expect(dbUser!.name).toBe(user.name);
   });
 
   it("Should reject user with invalid email.", async () => {
@@ -68,8 +73,34 @@ describe("User resolver", () => {
       },
     });
 
-    console.log(JSON.stringify(response));
-    // Check that response matches what we'd expect...
+    const error = response.errors![0].originalError;
+    expect(error).toBeInstanceOf(ArgumentValidationError);
+    const dbUser = await User.findOne({
+      where: { email: userInvalidEmail.email },
+    });
+    expect(dbUser).toBeUndefined();
+  });
+
+  it("Should reject email already signed up.", async () => {
+    await gCall({
+      source: registerMutation,
+      variableValues: {
+        input: user,
+      },
+    });
+
+    const response = await gCall({
+      source: registerMutation,
+      variableValues: {
+        input: user,
+      },
+    });
+    const error = response.errors![0].originalError;
+    expect(error).toBeInstanceOf(ArgumentValidationError);
+    const dbUser = await User.findOne({
+      where: { email: userInvalidEmail.email },
+    });
+    expect(dbUser).toBeUndefined();
   });
 
   it("Should reject user with invalid password.", async () => {
@@ -80,7 +111,11 @@ describe("User resolver", () => {
       },
     });
 
-    console.log(JSON.stringify(response));
-    // Check that response matches what we'd expect...
+    //const error = response.errors![0].originalError;
+    //expect(error).toBeInstanceOf(ArgumentValidationError);
+    const dbUser = await User.findOne({
+      where: { email: userInvalidPassword.email },
+    });
+    expect(dbUser).toBeUndefined();
   });
 });

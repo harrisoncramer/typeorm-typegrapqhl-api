@@ -12,6 +12,7 @@ import bcryptjs from "bcryptjs";
 import { IsEmail, Length } from "class-validator";
 import { IsEmailAlreadyExists } from "./validators/isEmailAlreadyInUse";
 import { MyContext } from "../types/MyContext";
+import { IsPasswordTooWeak } from "./validators/isPasswordTooWeak";
 
 // Overload the Session type to allow us to add our own values
 declare module "express-session" {
@@ -32,6 +33,7 @@ class UserInput {
   email: string;
 
   @Field()
+  @IsPasswordTooWeak({ message: "That password is too simple." })
   password: string;
 }
 

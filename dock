@@ -12,14 +12,13 @@
 # dock prod stop
 # dock install
 # dock uninstall
+# dock reattach (to reattach to the development server after an npm install)
 
 usage="./dock ENV CMD [--port|-p] [args] \
 
 Example: 'dock dev start -p=2222'
 Example: 'dock prod stop'
-Example: 'dock build'
-Example: 'dock install underscore yargs'
-Example: 'dock uninstall underscore yargs'"
+Example: 'dock build'"
 
 if [ $# == 0 ]; then
   echo "$usage"
@@ -51,34 +50,41 @@ args=`echo $MAIN_ARGS`
 ## Available functions ##
 #########################
 
-if [[ $args == install* ]]; then
-  devContainer=$(docker ps -q --filter ancestor="typeorm-api:development")
-  if [[ -z "$devContainer" ]]; then
-    echo "Please start your development environment to install npm packages."
-  else
-    allContainers=$(docker ps -q --filter name=typeorm*)
-    for container in $allContainers
-    do
-      echo "Installing in $container ..."
-      docker exec $container npm install $MAIN_ARGS
-    done
-    echo "Installing locally..."
-    npm install
-  fi
-elif [[ $args == uninstall* ]]; then
-  devContainer=$(docker ps -q --filter ancestor="typeorm-api:development")
-  if [[ -z "$devContainer" ]]; then
-    echo "Please start your development environment to uninstall npm packages."
-  else
-    allContainers=$(docker ps -q --filter name=typeorm*)
-    for container in $allContainers
-    do
-      echo "Uninstalling in $container ..."
-      docker exec $container npm uninstall $MAIN_ARGS
-    done
-    npm uninstall $MAIN_ARGS
-  fi
-elif [[ "$args" == "build" ]]; then
+#if [[ $args == install* ]]; then
+  #devContainer=$(docker ps -q --filter "ancestor=typeorm-api:development" --filter "name=typeorm-api")
+  #if [[ -z "$devContainer" ]]; then
+    #echo "Please start your development environment to install npm packages."
+  #else
+    #echo "Installing Locally..."
+    #npm install $MAIN_ARGS
+    #devPort=$(docker exec $devContainer /bin/sh -c 'echo $PORT')
+    #echo "Rebuilding development image with new package.json and restarting server on port $devPort"
+    #PORT="$devPort" docker-compose -f docker-compose.dev.yml build \
+    #&& PORT="$devPort" docker-compose -f docker-compose.dev.yml stop \
+    #&& PORT="$devPort" docker-compose -f docker-compose.dev.yml start
+  #fi
+#elif [[ $args == uninstall* ]]; then
+  #devContainer=$(docker ps -q --filter "ancestor=typeorm-api:development" --filter "name=typeorm-api")
+  #if [[ -z "$devContainer" ]]; then
+    #echo "Please start your development environment to uninstall npm packages."
+  #else
+    #echo "Uninstalling Locally..."
+    #npm install $MAIN_ARGS
+    #devPort=$(docker exec $devContainer /bin/sh -c 'echo $PORT')
+    #echo "Rebuilding development image with new package.json and restarting server on port ${devPort}"
+    #PORT="$devPort" docker-compose -f docker-compose.dev.yml build \
+    #&& PORT="$devPort" docker-compose -f docker-compose.dev.yml restart
+  #fi
+#elif [[ "$args" == "reattach" ]]; then
+  #devContainer=$(docker ps -q --filter "ancestor=typeorm-api:development" --filter "name=typeorm-api")
+  #if [[ -z "$devContainer" ]]; then
+    #echo "There's no development server running."
+  #else
+    #devPort=$(docker exec $devContainer /bin/sh -c 'echo $PORT')
+    #PORT="$devPort" docker-compose -f docker-compose.dev.yml logs --follow
+  #fi
+
+if [[ "$args" == "build" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml build \
       && docker-compose -f docker-compose.prod.yml build \
       && PORT="$PORT" docker-compose -f docker-compose.test.yml build
