@@ -14,6 +14,30 @@ afterAll(async () => {
   await conn.close();
 });
 
+const user = {
+  name: faker.name.firstName(),
+  email: faker.internet.email(),
+  password: faker.internet.password(),
+};
+
+const userInvalidEmail = {
+  name: faker.name.firstName(),
+  email: "notemail",
+  password: faker.internet.password(),
+};
+
+const userInvalidPassword = {
+  name: faker.name.firstName(),
+  email: faker.internet.email(),
+  password: "hi",
+};
+
+const userPwnedPassword = {
+  name: faker.name.firstName(),
+  email: faker.internet.email(),
+  password: "123456789",
+};
+
 const registerMutation = `
 mutation Register($input: UserInput!) {
   register(
@@ -34,31 +58,17 @@ mutation Unregister($email: String! $password: String!) {
 }
 `;
 
-describe("User resolver", () => {
-  const user = {
-    name: faker.name.firstName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-  };
+const meQuery = `
+  {
+    me {
+      id
+      name
+      email
+    }
+  }
+`;
 
-  const userInvalidEmail = {
-    name: faker.name.firstName(),
-    email: "notemail",
-    password: faker.internet.password(),
-  };
-
-  const userInvalidPassword = {
-    name: faker.name.firstName(),
-    email: faker.internet.email(),
-    password: "hi",
-  };
-
-  const userPwnedPassword = {
-    name: faker.name.firstName(),
-    email: faker.internet.email(),
-    password: "123456789",
-  };
-
+describe("Registering + Unregistering", () => {
   it("Should register user with valid credentials.", async () => {
     const response = await gCall({
       source: registerMutation,
@@ -194,5 +204,41 @@ describe("User resolver", () => {
       where: { email: user.email },
     });
     expect(dbUser!.name).toBe(user.name);
+  });
+});
+
+describe("Getting information about myself", () => {
+  it("Should get current user", async () => {
+    const user = await User.create({
+      name: faker.name.firstName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    }).save();
+
+    const response = await gCall({
+      source: meQuery,
+      userId: user.id,
+    });
+
+    expect(response.data).toMatchObject({
+      me: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  });
+  it("Should not get user without ID in current context", async () => {
+    await User.create({
+      name: faker.name.firstName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    }).save();
+
+    const response = await gCall({
+      source: meQuery,
+    });
+
+    expect(response.data).toMatchObject({ me: null });
   });
 });

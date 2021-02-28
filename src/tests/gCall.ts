@@ -7,13 +7,13 @@ interface Options {
   variableValues?: Maybe<{
     [key: string]: any;
   }>;
+  userId?: string;
 }
 
 // Define schema up here so it only needs to be created once, not on every gCall.
 let schema: GraphQLSchema;
 
-// Higher order function that allows us to make calls to our Graphql Schema inside our tests more easily
-export const gCall = async ({ source, variableValues }: Options) => {
+export const gCall = async ({ source, variableValues, userId }: Options) => {
   if (!schema) {
     schema = await createSchema();
   }
@@ -22,5 +22,14 @@ export const gCall = async ({ source, variableValues }: Options) => {
     schema,
     source,
     variableValues,
+    // Mock our context because during our tests we're not actually getting this info from Express.js
+    contextValue: {
+      req: {
+        session: {
+          userId,
+        },
+      },
+      res: {},
+    },
   });
 };
