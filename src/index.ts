@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
-import { mySession } from "./redis";
+import { mySession } from "./redisLogic";
 import { connect } from "./postgres";
 import cors from "cors";
 import { createSchema } from "./utils/createSchema";
