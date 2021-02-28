@@ -11,11 +11,14 @@
 # dock prod start
 # dock prod stop
 
-usage="environment command [--port=9211|-p=9211]"
+usage="./dock ENV CMD [--port|-p] \
+
+Example: 'dock dev start -p=2222'
+Example: 'dock prod stop'
+Example: 'dock build'"
+
 if [ $# == 0 ]; then
   echo "$usage"
-  echo "Example: 'dock dev start -p=2222'"
-  echo "Example: 'dock prod stop'"
   exit;
 fi;
 
@@ -39,26 +42,22 @@ done
 
 args=`echo $MAIN_ARGS`
 
-if [[ "$args" == "dev start" ]]; then
+if [[ "$args" == "build" ]]; then
+    PORT="$PORT" docker-compose -f docker-compose.dev.yml build \
+      && docker-compose -f docker-compose.prod.yml build \
+      && PORT="$PORT" docker-compose -f docker-compose.test.yml build
+elif [[ "$args" == "dev start" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml up
-fi
-
-if [[ "$args" == "dev stop" ]]; then
+elif [[ "$args" == "dev stop" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml down
-fi
-
-if [[ "$args" == "test start" ]]; then
+elif [[ "$args" == "test start" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.test.yml run api
-fi
-
-if [[ "$args" == "test stop" ]]; then
+elif [[ "$args" == "test stop" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.test.yml down
-fi
-
-if [[ "$args" == "prod start" ]]; then
-    PORT="$PORT" docker-compose -f docker-compose.prod.yml up
-fi
-
-if [[ "$args" == "prod stop" ]]; then
-    PORT="$PORT" docker-compose -f docker-compose.prod.yml down
+elif [[ "$args" == "prod start" ]]; then
+    docker-compose -f docker-compose.prod.yml up -d
+elif [[ "$args" == "prod stop" ]]; then
+    docker-compose -f docker-compose.prod.yml down
+else
+  echo "$usage"
 fi
