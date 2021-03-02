@@ -39,8 +39,8 @@
     "typescript": "^4.2.2"
   },
   "scripts": {
+    "tsc": "tsc",
     "start:development": "ts-node-dev --respawn --poll src/index.ts",
-    "start:production": "tsc && node dist/index.js",
     "start:test": "npm run db:setup && jest --watchAll --maxWorkers=1",
     "db:setup": "ts-node ./src/tests/setup.ts"
   }
