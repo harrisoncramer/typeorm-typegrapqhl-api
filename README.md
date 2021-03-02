@@ -12,7 +12,7 @@ In order to open the API up for the world in production you'll need to open up p
 ## Testing
 
 1. Define any additional variables inside a `.env.test` file. By default, the `.env.test` file doesn't require any variables, but must exist.
-2. Run tests with the `./dock test start` command, or run the `docker-compose` command by hand: `docker-compose -f docker-compose.test.yml run api`
+2. Run tests with the `./dock test start` command, or run the `docker-compose` command by hand: `docker-compose -f docker-compose.test.yml run --rm api_test`
 
 ## Production
 
@@ -22,38 +22,15 @@ In order to open the API up for the world in production you'll need to open up p
 
 ## Installing NPM Packages
 
-This application is designed to run entirely on the docker instance, and you should only install packages locally to your `node_modules` folder after you install them in the instance. To make this easier, use the `./dock install` shortcut, or install them as follows:
+This application is designed to run entirely on the docker instance.
+
+and you should only install packages locally to your `node_modules` folder after you install them in the instance. To make this easier, use the `./dock dev install` shortcut while you've got a unn, or run the commands manually (you'll have to rebuild your images for testing and production):
 
 1. Install in the container `docker exec typeorm-api npm install PACKAGE_NAME`
 2. Install the packages locally with `npm install` (no need to specify the packages, because they will get picked up in your package.json file)
 
 ## Logs
 
-The application automatically sends out information to the console, which in development and production will automatically be output to docker's logs. You can see the last hour of logs from an instance with the `docker logs CONTAINER_ID --since 60m` command, for example.
-
-## Playground
-
-In development, the API will be accessible at the `http://localhost:1234/graphql` endpoint. You can easily test the DB with the following mutation:
-
-```
-mutation {
-  addHouseHearing(
-    input: {
-      title: "hi"
-      date: "2020-12-16T23:56:29.931Z"
-      time: "2020-12-16T23:56:29.931Z"
-      location: "a"
-      text: ""
-      chamber: "house"
-      committee: "hfac"
-      link: "google.com"
-    }
-  ) {
-    id
-  }
-}
-```
-
-This should return the ID of the new data. Congratulations, your database and API are up and running!
+Use the `./dock dev logs` command to follow the logs in development (they'll be hidden if you start your development server with the `--detached` flag).
 
 \*\* Note that if you are starting with a clean install, you may want to switch into the user's home folder. You may not have privileges to edit the folder you're currently in (probably owned by ubuntu). You will likely also have to change the ownership of the directory if you originally downloaded it with `ubuntu` like this: `sudo chown -R username:username .` from inside the directory.
