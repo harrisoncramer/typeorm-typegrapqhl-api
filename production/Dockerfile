@@ -21,7 +21,7 @@ RUN npm ci --only=production && npm run tsc
 ### SECOND STAGE ##
 ###################
 
-FROM gcr.io/distroless/nodejs:14
+FROM gcr.io/distroless/nodejs:14-debug
 COPY --from=stage1 /app /app
 WORKDIR /app
 

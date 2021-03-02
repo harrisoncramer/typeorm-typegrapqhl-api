@@ -21,7 +21,7 @@ fi;
 
 PORT=1234
 MAIN_ARGS=""
-DETATCHED=""
+DETATCHED=false
 
 for arg in "$@"
 do
@@ -31,7 +31,7 @@ do
         shift # Specify a port in development
         ;;
         -d|--detached)
-        DETATCHED="-d"
+        DETATCHED=true
         shift  # Specify detached mode in development
         ;;
         *)
@@ -53,7 +53,11 @@ if [[ "$args" == "build" ]]; then
       && docker-compose -f docker-compose.prod.yml build \
       && docker-compose -f docker-compose.test.yml build
 elif [[ "$args" == "dev start" ]]; then
-    PORT="$PORT" docker-compose -f docker-compose.dev.yml up "$DETATCHED"
+    if [[ "$DETATCHED" == "true" ]]; then
+      PORT="$PORT" docker-compose -f docker-compose.dev.yml up -d
+    else
+      PORT="$PORT" docker-compose -f docker-compose.dev.yml up 
+    fi
 elif [[ "$args" == "dev stop" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml down
 elif [[ "$args" == "dev logs" ]]; then
