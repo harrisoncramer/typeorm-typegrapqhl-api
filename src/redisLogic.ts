@@ -5,7 +5,7 @@ import connectRedis from "connect-redis";
 // Running Redis with docker-compose
 const connectionOpts = {
   host: process.env.REDIS_HOST,
-  port: 6379,
+  port: parseInt(process.env.REDIS_PORT as string) || 6379,
 };
 
 // Connect to Redis

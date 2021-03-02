@@ -16,6 +16,7 @@ export const connect = async () => {
       return db;
     } catch (err) {
       retries -= 1;
+      console.error(err);
       console.error(`Retries left ${retries}`);
       if (retries === 0 && !!getConnection()) {
         throw new Error("Not able to connect to PostgreSQL DB.");

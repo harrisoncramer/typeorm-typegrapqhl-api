@@ -1,18 +1,8 @@
 #!/bin/bash
 
 # This bash script will help you to run the docker containers quickly
-# It's a faster way of punching out the startup/end commands
-
-# Valid commands (not including parameters):
-# dock dev start
-# dock dev stop
-# dock test start
-# dock test stop
-# dock prod start
-# dock prod stop
-# dock install
-# dock uninstall
-# dock reattach (to reattach to the development server after an npm install)
+# It's a faster way of punching out the startup/end commands, log, shutdown, etc.
+# Notably, it'
 
 usage="./dock ENV CMD [--port|-p] [args] \
 
@@ -25,7 +15,10 @@ if [ $# == 0 ]; then
   exit;
 fi;
 
-# Default args
+###################
+## Get Arguments ##
+###################
+
 PORT=1234
 MAIN_ARGS=""
 
@@ -50,54 +43,24 @@ args=`echo $MAIN_ARGS`
 ## Available functions ##
 #########################
 
-#if [[ $args == install* ]]; then
-  #devContainer=$(docker ps -q --filter "ancestor=typeorm-api:development" --filter "name=typeorm-api")
-  #if [[ -z "$devContainer" ]]; then
-    #echo "Please start your development environment to install npm packages."
-  #else
-    #echo "Installing Locally..."
-    #npm install $MAIN_ARGS
-    #devPort=$(docker exec $devContainer /bin/sh -c 'echo $PORT')
-    #echo "Rebuilding development image with new package.json and restarting server on port $devPort"
-    #PORT="$devPort" docker-compose -f docker-compose.dev.yml build \
-    #&& PORT="$devPort" docker-compose -f docker-compose.dev.yml stop \
-    #&& PORT="$devPort" docker-compose -f docker-compose.dev.yml start
-  #fi
-#elif [[ $args == uninstall* ]]; then
-  #devContainer=$(docker ps -q --filter "ancestor=typeorm-api:development" --filter "name=typeorm-api")
-  #if [[ -z "$devContainer" ]]; then
-    #echo "Please start your development environment to uninstall npm packages."
-  #else
-    #echo "Uninstalling Locally..."
-    #npm install $MAIN_ARGS
-    #devPort=$(docker exec $devContainer /bin/sh -c 'echo $PORT')
-    #echo "Rebuilding development image with new package.json and restarting server on port ${devPort}"
-    #PORT="$devPort" docker-compose -f docker-compose.dev.yml build \
-    #&& PORT="$devPort" docker-compose -f docker-compose.dev.yml restart
-  #fi
-#elif [[ "$args" == "reattach" ]]; then
-  #devContainer=$(docker ps -q --filter "ancestor=typeorm-api:development" --filter "name=typeorm-api")
-  #if [[ -z "$devContainer" ]]; then
-    #echo "There's no development server running."
-  #else
-    #devPort=$(docker exec $devContainer /bin/sh -c 'echo $PORT')
-    #PORT="$devPort" docker-compose -f docker-compose.dev.yml logs --follow
-  #fi
-
 if [[ "$args" == "build" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml build \
       && docker-compose -f docker-compose.prod.yml build \
-      && PORT="$PORT" docker-compose -f docker-compose.test.yml build
+      && docker-compose -f docker-compose.test.yml build
 elif [[ "$args" == "dev start" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml up
 elif [[ "$args" == "dev stop" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml down
+elif [[ "$args" == "dev logs" ]]; then
+    PORT="$PORT" docker-compose -f docker-compose.dev.yml logs --follow
 elif [[ "$args" == "dev psql" ]]; then
     docker exec -it db_dev psql -h localhost -p 5432 -U postgres -W
 elif [[ "$args" == "dev redis" ]]; then
     docker exec -it redis_dev redis-cli
 elif [[ "$args" == "test start" ]]; then
-    docker-compose -f docker-compose.test.yml run api_test
+    # The below comment works, but your servers will remain running. If you'd like to use
+    # This instead, just switch the commands
+    docker-compose -f docker-compose.test.yml run api_test 
 elif [[ "$args" == "test stop" ]]; then
     docker-compose -f docker-compose.test.yml down
 elif [[ "$args" == "prod start" ]]; then
