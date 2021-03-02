@@ -2,7 +2,7 @@ version: "3"
 services:
   api_test:
     image: "typeorm-api:test" 
-    container_name: "typeorm-api"
+    container_name: "typeorm-api-test"
     build: 
       context: ./
       dockerfile: Dockerfile
