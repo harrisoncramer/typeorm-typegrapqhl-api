@@ -2,11 +2,11 @@ module.exports = [
   {
     name: "test",
     type: "postgres",
-    host: "db",
+    host: "db_test",
     port: 5432,
     password: "postgres",
     username: "postgres",
-    database: "postgres", // Will this db exist...?
+    database: "postgres",
     logging: false,
     entities: ["src/entity/**/*.ts"],
     migrations: ["src/migration/**/*.ts"],
@@ -17,7 +17,7 @@ module.exports = [
   {
     name: "development",
     type: "postgres",
-    host: "db",
+    host: "db_dev",
     port: 5432,
     password: "postgres",
     username: "postgres",

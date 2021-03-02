@@ -3,9 +3,20 @@ import session from "express-session";
 import connectRedis from "connect-redis";
 
 // Running Redis with docker-compose
-const connectionOpts = {
-  host: "redis",
-  port: 6379,
+let tries = 5;
+const connectionOpts: Redis.RedisOptions = {
+  host: process.env.REDIS_HOST,
+  port: parseInt(process.env.REDIS_PORT as string) || 6379,
+  retryStrategy: (time) => {
+    if (tries === 0) {
+      throw new Error("Could not connect to Redis.");
+    } else {
+      setTimeout(() => {
+        tries--;
+      }, time);
+      return 2000;
+    }
+  },
 };
 
 // Connect to Redis

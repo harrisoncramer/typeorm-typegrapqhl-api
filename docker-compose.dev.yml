@@ -1,8 +1,8 @@
 version: "3"
 services:
-  api:
+  api_dev:
     image: "typeorm-api:development" 
-    container_name: "typeorm-api"
+    container_name: "typeorm-api-dev"
     build: 
       context: ./
       dockerfile: Dockerfile
@@ -14,27 +14,32 @@ services:
     environment:
       ENV: development
       PORT: "${PORT}"
+      REDIS_HOST: "redis_dev"
     env_file:
       - ".env.development"
     depends_on:
-      - db
-      - redis
+      - db_dev
+      - redis_dev
     restart: always
-  db:
+    networks:
+      - typeorm_development
+  db_dev:
     image: "postgres:13.2-alpine"
-    container_name: postgres
+    container_name: db_dev
     environment:
       POSTGRES_PASSWORD: postgres
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
     volumes:
       - "./postgres/development/data:/var/lib/postgresql/data:delegated"
-    ports:
-      - "5432:5432"
-  redis:
+    networks:
+      - typeorm_development
+  redis_dev:
     image: "redis:6.2.0-alpine"
-    container_name: redis
+    container_name: redis_dev
     volumes: 
       - "./redis/development/data:/var/lib/redis"
-    expose:
-      - 6379
+    networks:
+      - typeorm_development
+networks:
+  typeorm_development:

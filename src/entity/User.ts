@@ -1,8 +1,8 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 
-@ObjectType()
 @Entity()
+@ObjectType()
 export class User extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
@@ -16,6 +16,7 @@ export class User extends BaseEntity {
   @Column("text", { unique: true })
   email: string;
 
+  // This is after the password is hashed...
   @Column()
   password: string;
 }

@@ -12,6 +12,7 @@ import bcryptjs from "bcryptjs";
 import { IsEmail, Length } from "class-validator";
 import { IsEmailAlreadyExists } from "./validators/isEmailAlreadyInUse";
 import { MyContext } from "../types/MyContext";
+import { IsPasswordTooWeak } from "./validators/isPasswordTooWeak";
 
 // Overload the Session type to allow us to add our own values
 declare module "express-session" {
@@ -32,6 +33,7 @@ class UserInput {
   email: string;
 
   @Field()
+  @IsPasswordTooWeak({ message: "That password is too simple." })
   password: string;
 }
 
@@ -61,6 +63,21 @@ export class UserResolver {
     ctx.req.session.userId = user.id;
 
     return user;
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
+  async unregister(
+    @Arg("email") email: string,
+    @Arg("password") password: string
+  ): Promise<boolean | null> {
+    const user = await User.findOne({ where: { email } });
+    if (!user) return null;
+
+    const valid = await bcryptjs.compare(password, user.password);
+    if (!valid) return null;
+
+    await user.remove();
+    return true;
   }
 
   @Mutation(() => User)
