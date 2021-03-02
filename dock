@@ -34,7 +34,7 @@ do
     case $arg in
         -p=*|--port=*)
         PORT="${arg#*=}"
-        shift # Remove --port= from processing
+        shift # Remove --port= from processing. 
         ;;
         *)
         MAIN_ARGS="$MAIN_ARGS $1"
@@ -92,10 +92,14 @@ elif [[ "$args" == "dev start" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml up
 elif [[ "$args" == "dev stop" ]]; then
     PORT="$PORT" docker-compose -f docker-compose.dev.yml down
+elif [[ "$args" == "dev psql" ]]; then
+    docker exec -it db_dev psql -h localhost -p 5432 -U postgres -W
+elif [[ "$args" == "dev redis" ]]; then
+    docker exec -it redis_dev redis-cli
 elif [[ "$args" == "test start" ]]; then
-    PORT="$PORT" docker-compose -f docker-compose.test.yml run api
+    docker-compose -f docker-compose.test.yml run api_test
 elif [[ "$args" == "test stop" ]]; then
-    PORT="$PORT" docker-compose -f docker-compose.test.yml down
+    docker-compose -f docker-compose.test.yml down
 elif [[ "$args" == "prod start" ]]; then
     docker-compose -f docker-compose.prod.yml up -d
 elif [[ "$args" == "prod stop" ]]; then
