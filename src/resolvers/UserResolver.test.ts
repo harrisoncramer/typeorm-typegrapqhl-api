@@ -14,30 +14,13 @@ afterAll(async () => {
   await conn.close();
 });
 
-const user = {
+const generateUser = () => ({
   name: faker.name.firstName(),
   email: faker.internet.email(),
   password: faker.internet.password(),
-};
+});
 
-const userInvalidEmail = {
-  name: faker.name.firstName(),
-  email: "notemail",
-  password: faker.internet.password(),
-};
-
-const userInvalidPassword = {
-  name: faker.name.firstName(),
-  email: faker.internet.email(),
-  password: "hi",
-};
-
-const userPwnedPassword = {
-  name: faker.name.firstName(),
-  email: faker.internet.email(),
-  password: "123456789",
-};
-
+// Mutations + Queries
 const registerMutation = `
 mutation Register($input: UserInput!) {
   register(
@@ -68,8 +51,10 @@ const meQuery = `
   }
 `;
 
+// Tests
 describe("Registering + Unregistering", () => {
   it("Should register user with valid credentials.", async () => {
+    const user = generateUser();
     const response = await gCall({
       source: registerMutation,
       variableValues: {
@@ -91,6 +76,7 @@ describe("Registering + Unregistering", () => {
   });
 
   it("Should reject user with invalid email.", async () => {
+    const userInvalidEmail = { ...generateUser(), email: "notanemail" };
     const response = await gCall({
       source: registerMutation,
       variableValues: {
@@ -107,6 +93,7 @@ describe("Registering + Unregistering", () => {
   });
 
   it("Should reject email already signed up.", async () => {
+    const user = generateUser();
     await gCall({
       source: registerMutation,
       variableValues: {
@@ -122,13 +109,10 @@ describe("Registering + Unregistering", () => {
     });
     const error = response.errors![0].originalError;
     expect(error).toBeInstanceOf(ArgumentValidationError);
-    const dbUser = await User.findOne({
-      where: { email: userInvalidEmail.email },
-    });
-    expect(dbUser).toBeUndefined();
   });
 
   it("Should reject user with invalid password.", async () => {
+    const userInvalidPassword = { ...generateUser(), password: "1234" };
     const response = await gCall({
       source: registerMutation,
       variableValues: {
@@ -145,6 +129,7 @@ describe("Registering + Unregistering", () => {
   });
 
   it("Should reject user with common password (that's easily hacked).", async () => {
+    const userPwnedPassword = { ...generateUser(), password: "123456789" };
     const response = await gCall({
       source: registerMutation,
       variableValues: {
@@ -155,12 +140,13 @@ describe("Registering + Unregistering", () => {
     const error = response.errors![0].originalError;
     expect(error).toBeInstanceOf(ArgumentValidationError);
     const dbUser = await User.findOne({
-      where: { email: userInvalidPassword.email },
+      where: { email: userPwnedPassword.email },
     });
     expect(dbUser).toBeUndefined();
   });
 
   it("Should unregister user", async () => {
+    const user = generateUser();
     await gCall({
       source: registerMutation,
       variableValues: {
@@ -183,6 +169,7 @@ describe("Registering + Unregistering", () => {
   });
 
   it("Should not unregister user with wrong password", async () => {
+    const user = generateUser();
     await gCall({
       source: registerMutation,
       variableValues: {
