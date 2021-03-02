@@ -20,7 +20,7 @@ const connectionOpts: Redis.RedisOptions = {
 };
 
 // Connect to Redis
-const redis = new Redis(connectionOpts);
+export const redis = new Redis(connectionOpts);
 
 // Configure Redis to store session information
 const RedisStore = connectRedis(session);

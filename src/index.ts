@@ -23,7 +23,7 @@ import { createSchema } from "./utils/createSchema";
     playground: process.env.ENV === "development",
     introspection: true,
     schema: await createSchema(),
-    context: ({ req }) => ({ req }),
+    context: ({ req, res }) => ({ req, res }),
   });
 
   // Apply Apollo and start up express application

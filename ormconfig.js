@@ -41,7 +41,7 @@ module.exports = [
     password: process.env.POSTGRES_PASSWORD,
     username: process.env.POSTGRES_USER,
     database: process.env.POSTGRES_DB,
-    synchronize: false, // switch this to false once you have the initial tables created and use migrations instead
+    synchronize: true, // switch this to false once you have the initial tables created and use migrations instead
     logging: false,
     entities: ["./dist/entity/*.js"],
     migrations: ["./dist/migration/*.js"],

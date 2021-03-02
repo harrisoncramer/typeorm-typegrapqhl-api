@@ -41,6 +41,12 @@ mutation Unregister($email: String! $password: String!) {
 }
 `;
 
+const logout = `
+  mutation {
+    logout
+  }
+`;
+
 const meQuery = `
   {
     me {
@@ -227,5 +233,26 @@ describe("Getting information about myself", () => {
     });
 
     expect(response.data).toMatchObject({ me: null });
+  });
+
+  it("Should log me out", async () => {
+    const user = await User.create({
+      name: faker.name.firstName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    }).save();
+
+    await gCall({
+      source: logout,
+    });
+
+    const response = await gCall({
+      source: meQuery,
+      userId: user.id,
+    });
+
+    expect(response.data).toMatchObject({
+      me: null,
+    });
   });
 });
