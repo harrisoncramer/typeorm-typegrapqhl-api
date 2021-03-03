@@ -60,7 +60,6 @@ export class UserResolver {
     return User.findOne(ctx.req.session.userId);
   }
 
-  // Login user
   @Mutation(() => User, { nullable: true })
   async login(
     @Arg("email") email: string,

@@ -22,14 +22,21 @@ export const gCall = async ({ source, variableValues, userId }: Options) => {
     schema,
     source,
     variableValues,
-    // Mock our context because during our tests we're not actually getting this info from Express.js
     contextValue: {
+      // Mock values that are in our context because we don't have Express
       req: {
         session: {
           userId,
+          destroy: async function (callback: () => Promise<boolean>) {
+            await callback();
+          },
         },
       },
-      res: {},
+      res: {
+        clearCookie: function () {
+          return null;
+        },
+      },
     },
   });
 };

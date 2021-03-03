@@ -4,6 +4,7 @@ export async function sendEmail(email: string, url: string) {
   // Administrative email and password for production must be passed through ENV
   // In development, we use auto-generated information
   let transporterOpts;
+  if (process.env.ENV === "test") return;
   if (process.env.ENV === "production") {
     transporterOpts = {
       service: "gmail",
@@ -35,9 +36,8 @@ export async function sendEmail(email: string, url: string) {
     html: `<a href="${url}">${url}</a>`, // html body
   };
 
-  const info = await transporter.sendMail(mailOptions);
-
   // Preview only available when sending through an Ethereal account
+  const info = await transporter.sendMail(mailOptions);
   console.log(`Message sent to ${email}`);
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 }

@@ -47,6 +47,18 @@ const logout = `
   }
 `;
 
+const login = `
+mutation Login($email: String! $password: String!) {
+  login(
+    email: $email
+    password: $password
+  ) {
+      name
+      email
+    }
+  }
+`;
+
 const meQuery = `
   {
     me {
@@ -56,6 +68,21 @@ const meQuery = `
     }
   }
 `;
+
+const forgotPassword = `
+mutation ForgotPassword($email: String!){
+  forgotPassword(email: $email)
+}
+`;
+//const changePassword = `
+//mutation ChangePassword($input: ChangePasswordInput) {
+//changePassword($input){
+//id
+//name
+//email
+//}
+//}
+//`
 
 // Tests
 describe("Registering + Unregistering", () => {
@@ -234,7 +261,9 @@ describe("Getting information about myself", () => {
 
     expect(response.data).toMatchObject({ me: null });
   });
+});
 
+describe("Logging users in and out", () => {
   it("Should log me out", async () => {
     const user = await User.create({
       name: faker.name.firstName(),
@@ -242,17 +271,79 @@ describe("Getting information about myself", () => {
       password: faker.internet.password(),
     }).save();
 
-    await gCall({
-      source: logout,
-    });
-
     const response = await gCall({
-      source: meQuery,
+      source: logout,
       userId: user.id,
     });
 
     expect(response.data).toMatchObject({
-      me: null,
+      logout: true,
     });
+  });
+
+  it("Should log me in", async () => {
+    const user = generateUser();
+    await gCall({
+      source: registerMutation,
+      variableValues: {
+        input: user,
+      },
+    });
+
+    const response = await gCall({
+      source: login,
+      variableValues: {
+        email: user.email,
+        password: user.password,
+      },
+    });
+
+    expect(response.data).toMatchObject({
+      login: {
+        name: user.name,
+        email: user.email,
+      },
+    });
+  });
+  it("Should not log me in with the wrong password", async () => {
+    const user = generateUser();
+    await gCall({
+      source: registerMutation,
+      variableValues: {
+        input: user,
+      },
+    });
+
+    const response = await gCall({
+      source: login,
+      variableValues: {
+        email: user.email,
+        password: "thewrongone",
+      },
+    });
+
+    expect(response.data!.login).toBeNull();
+  });
+});
+
+describe("Changing passwords", () => {
+  it("Should let me get a link to change my password", async () => {
+    const user = generateUser();
+
+    await gCall({
+      source: registerMutation,
+      variableValues: {
+        input: user,
+      },
+    });
+
+    const res = await gCall({
+      source: forgotPassword,
+      variableValues: {
+        email: user.email,
+      },
+    });
+
+    expect(res.data!.forgotPassword).toBe(true);
   });
 });
