@@ -29,6 +29,3 @@ spec:
           envFrom:
             - secretRef:
                 name: typeorm-config # Must create secret from current .env.production file using kubectl create secret generic typeorm-config --from-env-file .env.production
-          #envFrom: # Must create configMap from current .env.production file using kubectl create configMap typeorm-config --from-env-file .env.production
-            #- configMapRef:
-                #name: typeorm-config
