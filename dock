@@ -2,7 +2,6 @@
 
 # This bash script will help you to run the docker containers quickly
 # It's a faster way of punching out the startup/end commands, log, shutdown, etc.
-# Notably, it'
 
 usage="./dock ENV CMD [--port|-p] [--detached|-d] [args] \
 
