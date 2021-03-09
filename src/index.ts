@@ -8,7 +8,7 @@ import { createSchema } from "./utils/createSchema";
 
 (async () => {
   const app = express();
-  app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // The URL of the ReactApp
+  app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // The URL of the ReactApp in development
 
   // Connect to PostgreSQL DB
   if (["development", "production"].includes(process.env.ENV as string)) {
@@ -31,6 +31,7 @@ import { createSchema } from "./utils/createSchema";
   apolloServer.applyMiddleware({ app, cors: true });
   app.listen(1234, () => {
     console.log(`🔥 API running in ${process.env.ENV}`);
-    console.log(`🔬 http://localhost:${process.env.PORT}/graphql`);
+    process.env.ENV === "development" &&
+      console.log(`🔬 http://localhost:${process.env.PORT}/graphql`);
   });
 })();
