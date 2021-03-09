@@ -5,7 +5,7 @@ services:
     container_name: "typeorm-api-dev"
     build: 
       context: ./
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     volumes:
       - ./src:/app/src
       - "./package.json:/app/package.json" # Will overwrite local package.json file

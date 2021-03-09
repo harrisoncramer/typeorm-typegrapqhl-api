@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: typeorm
+spec:
+  selector:
+    matchLabels:
+      app: typeorm # Find and manage all the apps with this label
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: typeorm # Create apps with this label
+    spec:
+      containers:
+        - image: kingofcramers/typeorm # Pull the latest version (:latest)
+          imagePullPolicy: Always # Always pull image from Docker Hub
+          name: typeorm
+          ports:
+            - containerPort: 1234
+          env:
+            - name: ENV
+              value: "production"
+          envFrom:
+            - secretRef:
+                name: typeorm-config # Must create secret from current .env.production file using kubectl create secret generic typeorm-config --from-env-file .env.production
+          #envFrom: # Must create configMap from current .env.production file using kubectl create configMap typeorm-config --from-env-file .env.production
+            #- configMapRef:
+                #name: typeorm-config
