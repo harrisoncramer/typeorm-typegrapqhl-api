@@ -3,12 +3,11 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { mySession } from "./redisLogic";
 import { connect } from "./postgres";
-import cors from "cors";
 import { createSchema } from "./utils/createSchema";
 
 (async () => {
   const app = express();
-  app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // The URL of the ReactApp in development
+  const corsOptions = { credentials: true, origin: "http://localhost:3000" };
 
   // Connect to PostgreSQL DB
   if (["development", "production"].includes(process.env.ENV as string)) {
@@ -28,7 +27,7 @@ import { createSchema } from "./utils/createSchema";
 
   // Apply Apollo and start up express application
   // Note: We listen on port 1234, but expose that on process.env.PORT in docker-compose
-  apolloServer.applyMiddleware({ app, cors: true });
+  apolloServer.applyMiddleware({ app, cors: corsOptions });
   app.listen(1234, () => {
     console.log(`🔥 API running in ${process.env.ENV}`);
     process.env.ENV === "development" &&
