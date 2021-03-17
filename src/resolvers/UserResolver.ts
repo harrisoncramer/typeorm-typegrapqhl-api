@@ -155,7 +155,10 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async register(@Arg("input") input: UserInput): Promise<User> {
+  async register(
+    @Arg("input") input: UserInput,
+    @Ctx() ctx: MyContext
+  ): Promise<User> {
     const { name, password, email } = input;
     const hashed = await bcryptjs.hash(password, 12);
 
@@ -164,6 +167,9 @@ export class UserResolver {
       email,
       password: hashed,
     }).save();
+
+    // Set Cookie in session inside Redis
+    ctx.req.session.userId = user.id;
 
     return user;
   }
