@@ -74,6 +74,7 @@ mutation ForgotPassword($email: String!){
   forgotPassword(email: $email)
 }
 `;
+
 //const changePassword = `
 //mutation ChangePassword($input: ChangePasswordInput) {
 //changePassword($input){

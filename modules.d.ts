@@ -11,5 +11,6 @@ declare namespace NodeJS {
     POSTGRES_DB: string;
     USER_EMAIL: string;
     USER_PASSWORD: string;
+    SECURE_COOKIE: string; // Take care, if serving over HTTP this should be "false"
   }
 }

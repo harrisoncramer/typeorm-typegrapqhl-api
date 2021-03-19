@@ -36,7 +36,7 @@ export const mySession = session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: process.env.ENV === "production",
+    secure: process.env.SECURE_COOKIE === "true",
     maxAge: 1000 * 60 * 60 * 24 * 7 * 365,
   },
 });
