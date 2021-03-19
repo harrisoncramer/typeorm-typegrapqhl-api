@@ -1,4 +1,4 @@
-import { HouseHearing } from "src/entity";
+import { HouseHearing } from "../../entity/Hearing";
 import { Field, InputType } from "type-graphql";
 
 @InputType({ description: "Input type to set skip and limit." })

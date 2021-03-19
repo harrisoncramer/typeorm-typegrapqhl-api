@@ -6,7 +6,7 @@ spec:
   selector:
     matchLabels:
       app: typeorm # Find and manage all the apps with this label
-  replicas: 2
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -30,7 +30,6 @@ spec:
             - secretRef:
                 name: typeorm-config # Must create secret from current .env.production file using kubectl create secret generic typeorm-config --from-env-file .env.production
 --- 
-# Expose our service to other nodes in our cluster at http://typeorm:1234/graphql
 apiVersion: v1
 kind: Service
 metadata:

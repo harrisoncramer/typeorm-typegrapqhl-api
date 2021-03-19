@@ -1,22 +1,10 @@
 import { buildSchema } from "type-graphql";
 
-import {
-  UserResolver,
-  SenateDisclosureResolver,
-  HouseDisclosureResolver,
-  HouseHearingResolver,
-  SenateHearingResolver,
-} from "../resolvers";
+import { UserResolver } from "../resolvers";
 
 export const createSchema = async () =>
   buildSchema({
-    resolvers: [
-      UserResolver,
-      HouseDisclosureResolver,
-      SenateDisclosureResolver,
-      HouseHearingResolver,
-      SenateHearingResolver,
-    ],
+    resolvers: [UserResolver],
     authChecker: ({ context: { req } }) => !!req.session.userId,
     validate: true,
   });
