@@ -1,0 +1,89 @@
+# ###
+#
+# This file allows us to create RBAC (rule-based) permissions for our cluster
+# In tandem with AWS users, who will need to be provided access to our cluster (see aws-kubectl-config.yaml) we can
+# control which users can get, edit, delete, or update resources for our cluster
+#
+# Create an administrator role that's a ClusterRole. They can do anything.
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-administrator
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["*"]
+---
+# Create an operations-engineer role. They can do anything on the node level.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: operations-engineer
+  namespace: default
+rules:
+  - apiGroups: ["", "apps"] # "" indicates the core API group
+    resources: ["*"]
+    verbs: ["*"]
+---
+# Create an engineer role, who can read (get and list) actions
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: development-engineer
+  namespace: default
+rules:
+  - apiGroups: [""] 
+    resources: ["pods", "services"]
+    verbs: ["get", "list"]
+---
+#####
+#
+# The bindings below are just some examples of the users you could bind to specific roles
+# If you had a user who, through IAM, tried to access the cluster with the name "happy-camper"
+# you could bind their permissions to any of the above roles, or create a new one.
+#
+#
+#####
+# Bind the cluster-admin user to the cluster-administrator role
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: cluster-administrator-binding
+subjects:
+- kind: User
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: cluster-administrator # The cluster-administrator is bound to the role cluster-admin, as defined above
+  apiGroup: rbac.authorization.k8s.io
+---
+# Bind the "ops-performer" user to the operations-engineer role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ops-performer-rolebinding
+  namespace: default
+subjects:
+- kind: User
+  name: ops-performer
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: operations-engineer
+  apiGroup: rbac.authorization.k8s.io
+---
+# Bind the "development-engineer" to the more limited, development-engineer role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: engineer-performer-rolebinding
+  namespace: default
+subjects:
+- kind: User
+  name: development-engineer
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: development-engineer
+  apiGroup: rbac.authorization.k8s.io
