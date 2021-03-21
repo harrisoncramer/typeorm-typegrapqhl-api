@@ -5,3 +5,4 @@ database.sqlite
 .env.*
 postman
 .DS_STORE
+*.bak.yaml

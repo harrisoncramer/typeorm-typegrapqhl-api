@@ -1,0 +1,24 @@
+####
+# After we create a cluster with EKSCtl, we'll need to allow our various IAM users to access it
+# This file maps those users, with their userarn 
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: aws-auth
+  namespace: kube-system
+data:
+  mapRoles: |
+    - rolearn: # Fill this in with the eksctl arn (you can get it from the clusters --> cluster-name --> configuration --> configuration --> Cluster IAM Role ARN)
+      username: system:node:{{EC2PrivateDNSName}}
+      groups:
+        - system:bootstrappers
+        - system:nodes
+  mapUsers: |
+    - userarn: # The userarn of your IAM user that you want to have system-level access to the cluster with
+      username: # The username (this will be interpreted by the RBAC rules in the roles-and-rolebindings.yaml file)
+      groups:
+        - system:masters
+    - userarn: # The IAM ARN of an operations engineer
+      username: ops-performer
+    - userarn: # The IAM ARN of a development engineer
+      username: development-engineer
