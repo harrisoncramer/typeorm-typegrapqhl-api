@@ -1,0 +1,35 @@
+#####
+#
+# Use this file to create your cluster.
+# The schema is here: https://eksctl.io/usage/schema/
+# We're basing this configuration on the setup here: https://github.com/stacksimplify/aws-eks-kubernetes-masterclass/tree/master/01-EKS-Create-Cluster-using-eksctl/01-02-Create-EKSCluster-and-NodeGroups
+#
+#
+#####
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: basic-cluster-with-yaml
+  region: us-east-1
+  annotations: {
+    description: "This is our default cluster file. We can run this to get our cluster up and running."
+  }
+managedNodeGroups:
+  - name: managed-node-group
+    minSize: 2
+    maxSize: 4
+    desiredCapacity: 3
+    volumeSize: 20
+    instanceType: t3.medium
+    ssh:
+      allow: true # Defaults to ~/.ssh/id_rsa
+      publicKeyPath: ~/.ssh/id_rsa.pub
+    iam:
+      withAddonPolicies:
+        imageBuilder: true # ECR Access
+        autoScaler: true
+        externalDNS: true
+        certManager: true
+        appMesh: true
+        albIngress: true
