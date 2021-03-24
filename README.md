@@ -14,23 +14,7 @@ This is a template GraphQL/TypeORM/PostgresSQL API. The application uses docker-
 
 ## Production
 
-This application is designed to be run through kubernetes. The configuration files are stored inside the `infrastructure` folder.
-
-1. Run the redis deployment to setup an instance of Redis: `kubectl apply -f infrastructure/redis.kube.yaml`
-2. Create the secret to pass to your production deployment: `kubectl create secret generic typeorm-config --from-env-file .env.production`
-3. Deploy a production version of the application (pulling from docker hub): `kubectl apply -f infrastructure/deployment.kube.yaml`
-
-Note that the Redis deployment should be started first. Also note that you'll need to replace `kingofcramers/typeorm` with the actual path to your repository on Docker Hub. In order to redeploy an updated version of your application to production, you can rebuild it and then restart your application:
-
-1. First, rebuild the image: `docker build . --tag yourDockerUsername/typeorm`
-2. Then restart the deployment (which pulls the new image automatically): `kubectl rollout restart deployment typeorm`
-
-You can change the production environment secrets, and then restart the server for them to take effect:
-
-1. First, update the secret: `kubectl create secret generic typeorm-config --from-env-file .env.production --dry-run -o yaml | kubectl apply -f -`
-2. Then restart the deployment: `kubectl rollout restart deployment typeorm`
-
-By default, the application is not configured to connect to a local PostgresSQL instance, but rather connect to a managed external PostgresSQL instance, like [Amazon RDS](https://aws.amazon.com/rds/postgresql/) for PostgresSQL. The connection configuration options are indicated in the `modules.d.ts` file.
+This application is designed to be run through kubernetes. The configuration files are stored inside the `infrastructure` folder. There is a separate readme for configuring your cluster contained in that folder.
 
 ## Installing NPM Packages
 
