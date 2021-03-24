@@ -1,10 +1,10 @@
 import { buildSchema } from "type-graphql";
 
-import { UserResolver } from "../resolvers";
+import { UserResolver, PageLinkResolver } from "../resolvers";
 
 export const createSchema = async () =>
   buildSchema({
-    resolvers: [UserResolver],
+    resolvers: [UserResolver, PageLinkResolver],
     authChecker: ({ context: { req } }) => !!req.session.userId,
     validate: true,
   });

@@ -3,7 +3,7 @@ import {
   EventSubscriber,
   InsertEvent,
   RemoveEvent,
-  UpdateEvent,
+  //UpdateEvent,
 } from "typeorm";
 
 @EventSubscriber()
@@ -14,11 +14,11 @@ export class Logger implements EntitySubscriberInterface {
     }
   }
 
-  beforeUpdate(event: UpdateEvent<any>) {
-    if (process.env.ENV !== "test") {
-      console.log("Updating", event.entity);
-    }
-  }
+  //afterUpdate(event: UpdateEvent<any>) {
+  //if (process.env.ENV !== "test") {
+  //console.log("Updating", event.entity);
+  //}
+  //}
 
   beforeRemove(event: RemoveEvent<any>) {
     if (process.env.ENV !== "test") {

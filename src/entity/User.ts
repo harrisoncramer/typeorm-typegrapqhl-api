@@ -1,8 +1,15 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity } from "typeorm";
+import {
+  BaseEntity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+} from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
+import { PageLink } from "./PageLink";
 
-@Entity()
 @ObjectType()
+@Entity({ name: "users" })
 export class User extends BaseEntity {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
@@ -19,4 +26,10 @@ export class User extends BaseEntity {
   // This is after the password is hashed...
   @Column()
   password: string;
+
+  // One user has many pageLinks...
+  // On delete, remove all associated pagelinks
+  @Field(() => [PageLink], { nullable: true })
+  @OneToMany(() => PageLink, (link) => link.user, { onDelete: "CASCADE" })
+  pagelinks: PageLink[];
 }
