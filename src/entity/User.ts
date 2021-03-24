@@ -30,6 +30,9 @@ export class User extends BaseEntity {
   // One user has many pageLinks...
   // On delete, remove all associated pagelinks
   @Field(() => [PageLink], { nullable: true })
-  @OneToMany(() => PageLink, (link) => link.user, { onDelete: "CASCADE" })
+  @OneToMany(() => PageLink, (link) => link.user, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
   pagelinks: PageLink[];
 }

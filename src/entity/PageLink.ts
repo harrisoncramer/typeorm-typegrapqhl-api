@@ -21,6 +21,9 @@ export class PageLink extends BaseEntity {
 
   // Many pagelinks belong to one user...
   @Field(() => User)
-  @ManyToOne(() => User, (user) => user.pagelinks)
+  @ManyToOne(() => User, (user) => user.pagelinks, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
   user: User;
 }

@@ -62,12 +62,10 @@ export class PageLinkResolver {
     if (!user) return null;
 
     // Filter out matching id...
+    // Cascade will delete pagelink
     user.pagelinks = user.pagelinks.filter((link) => link.id !== id);
     await user.save();
     return id;
-    // Will it also delete the link???
-    //await findAndRemove(PageLink, id);
-    //return id;
   }
 
   @Mutation(() => PageLink)
@@ -75,19 +73,15 @@ export class PageLinkResolver {
     @Arg("input") input: PageLinkInput,
     @Ctx() ctx: MyContext
   ): Promise<PageLink | null> {
-    const pagelink = PageLink.create(input);
     const user = await User.findOne(ctx.req.session.userId, {
       relations: ["pagelinks"],
     });
     if (!user) return null;
 
-    // Save pagelink
-    pagelink.user = user;
+    // Create pagelink
+    // Saving will automatically add it to the user's pagelinks.
+    const pagelink = PageLink.create({ ...input, user });
     await pagelink.save();
-
-    // Save user's pagelinks
-    user.pagelinks = [...user.pagelinks, pagelink];
-    await user.save();
 
     return pagelink;
   }

@@ -56,7 +56,7 @@ export class UserResolver {
   // Get current user based on session userId
   @Query(() => User, { nullable: true })
   async me(@Ctx() ctx: MyContext): Promise<User | undefined> {
-    return User.findOne(ctx.req.session.userId);
+    return User.findOne(ctx.req.session.userId, { relations: ["pagelinks"] });
   }
 
   @Mutation(() => User, { nullable: true })
