@@ -4,7 +4,7 @@
 
 # Check to make sure that we haven't modified the .gitignore file to allow for any of our production variables to enter the project
 
-res=$(find . -name ".env.*" -not -path "./node_modules/*" | wc -l)
+res=$(git diff --cached --name-status | awk '$1 != "D" { print $2 }' | grep ".env.*" | wc -l)
 if [[ "$res" -gt "0" ]]; then
   echo "Error: You are trying to commit .env files. Fix your .gitignore file."
   exit 1;
