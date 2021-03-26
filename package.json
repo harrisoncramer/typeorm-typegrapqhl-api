@@ -43,6 +43,7 @@
     "uuid": "^8.3.2"
   },
   "scripts": {
+    "preinstall": "git config core.hooksPath hooks",
     "tsc": "tsc",
     "start:development": "ts-node-dev --respawn --poll src/index.ts",
     "start:test": "npm run db:setup && jest --watchAll --maxWorkers=1",
