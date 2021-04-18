@@ -141,16 +141,29 @@ export class UserResolver {
   @Mutation(() => Boolean, { nullable: true })
   async unregister(
     @Arg("email") email: string,
-    @Arg("password") password: string
+    @Arg("password") password: string,
+    @Ctx() ctx: MyContext
   ): Promise<boolean | null> {
     const user = await User.findOne({ where: { email } });
     if (!user) return null;
 
     const valid = await bcryptjs.compare(password, user.password);
     if (!valid) return null;
-
     await user.remove();
-    return true;
+
+    return new Promise((res, rej) =>
+      ctx.req.session!.destroy((err) => {
+        // Remove Redis session
+        if (err) {
+          console.error(err);
+          return rej(false);
+        }
+
+        // Remove cookie from the browser
+        ctx.res.clearCookie("qid");
+        return res(true);
+      })
+    );
   }
 
   @Mutation(() => User)
