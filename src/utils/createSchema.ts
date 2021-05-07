@@ -1,6 +1,7 @@
 import { buildSchema } from "type-graphql";
 
-import { UserResolver, PageLinkResolver } from "../resolvers";
+import { UserResolver } from "../resolvers/UserResolver";
+import { PageLinkResolver } from "../resolvers/PageLinkResolver";
 
 export const createSchema = async () =>
   buildSchema({

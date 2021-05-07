@@ -8,7 +8,6 @@ import {
   Ctx,
 } from "type-graphql";
 import { PageLink } from "../entity/PageLink";
-import { findAndRemove, findOne } from "./common/Methods";
 import { User } from "../entity/User";
 import { MyContext } from "../types/MyContext";
 

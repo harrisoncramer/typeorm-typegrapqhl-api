@@ -2,7 +2,7 @@ import { connect } from "../postgres";
 import { Connection } from "typeorm";
 import { gCall } from "../tests/gCall";
 import faker from "faker";
-import { User } from "../entity";
+import { User } from "../entity/User";
 import { ArgumentValidationError } from "type-graphql";
 
 let conn: Connection;

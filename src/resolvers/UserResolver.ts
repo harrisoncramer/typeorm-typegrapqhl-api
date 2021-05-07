@@ -7,7 +7,7 @@ import {
   Field,
   Ctx,
 } from "type-graphql";
-import { User } from "../entity";
+import { User } from "../entity/User";
 import bcryptjs from "bcryptjs";
 import { IsEmail, Length } from "class-validator";
 import { IsEmailAlreadyExists } from "./validators/isEmailAlreadyInUse";

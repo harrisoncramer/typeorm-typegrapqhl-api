@@ -47,18 +47,18 @@ args=`echo $MAIN_ARGS`
 #########################
 
 if [[ "$args" == "build" ]]; then
-    PORT="$PORT" docker-compose -f docker-compose.dev.yml build \
-      && docker-compose -f docker-compose.test.yml build
+    PORT="$PORT" docker compose -f docker-compose.dev.yml build \
+      && docker compose -f docker-compose.test.yml build
 elif [[ "$args" == "dev start" ]]; then
     if [[ "$DETATCHED" == "true" ]]; then
-      PORT="$PORT" docker-compose -f docker-compose.dev.yml up -d
+      PORT="$PORT" docker compose -f docker-compose.dev.yml up -d
     else
-      PORT="$PORT" docker-compose -f docker-compose.dev.yml up 
+      PORT="$PORT" docker compose -f docker-compose.dev.yml up 
     fi
 elif [[ "$args" == "dev stop" ]]; then
-    PORT="$PORT" docker-compose -f docker-compose.dev.yml down
+    PORT="$PORT" docker compose -f docker-compose.dev.yml down
 elif [[ "$args" == "dev logs" ]]; then
-    PORT="$PORT" docker-compose -f docker-compose.dev.yml logs --follow
+    PORT="$PORT" docker compose -f docker-compose.dev.yml logs --follow
 elif [[ "$args" == "dev psql" ]]; then
     docker exec -it db_dev psql -h localhost -p 5432 -U postgres -W
 elif [[ "$args" == "dev redis" ]]; then
@@ -66,9 +66,9 @@ elif [[ "$args" == "dev redis" ]]; then
 elif [[ "$args" == "test start" ]]; then
     # The below comment works, but your servers will remain running. If you'd like to use
     # This instead, just switch the commands
-    docker-compose -f docker-compose.test.yml run --rm api_test 
+    docker compose -f docker-compose.test.yml run --rm api_test 
 elif [[ "$args" == "test stop" ]]; then
-    docker-compose -f docker-compose.test.yml down
+    docker compose -f docker-compose.test.yml down
 else
   echo "$usage"
 fi
