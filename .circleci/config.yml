@@ -1,0 +1,14 @@
+version: 2.1
+orbs:
+  # Easily installs NodeJS, see: https://circleci.com/developer/orbs/orb/circleci/node
+  node: circleci/node@4.1
+jobs:
+  build-and-test:  
+    docker:
+      - image: cimg/node:15.2.0
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Run tests
+          command: ./dock test start
